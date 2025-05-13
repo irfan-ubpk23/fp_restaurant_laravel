@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('order_detail', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('menu_id');
-            $table->integer('jumlah');
             $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('menu_id');
+
+            $table->integer('jumlah');
             $table->timestamps();
 
             $table->foreign('menu_id')->references('id')->on('menu');
