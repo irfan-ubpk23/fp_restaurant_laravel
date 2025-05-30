@@ -14,4 +14,9 @@ class Menu extends Model
         'status_menu',
         'waktu_saji'
     ];
+
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class, 'id', 'id_kategori');
+    }
 }

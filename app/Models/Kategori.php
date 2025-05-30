@@ -10,4 +10,9 @@ class Kategori extends Model
     protected $fillable = [
         'nama_kategori'
     ];
+
+    public function menus()
+    {
+        return $this->hasMany(Menu::class, 'id', 'id_kategori');
+    }
 }

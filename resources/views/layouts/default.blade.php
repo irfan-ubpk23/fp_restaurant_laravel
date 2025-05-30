@@ -3,9 +3,11 @@
 
 <head>
     @include('includes.head')
+
+    @yield('css')
 </head>
 <body>
-    @yield('content')
+    @yield('body')
 
     @include('includes.footer')
 
