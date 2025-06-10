@@ -2,60 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kategori;
+use App\Services\KategoriService;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class KategoriController extends Controller
 {
-    public function index()
+    public function index(KategoriService $kategori_service)
     {
-        $kategoris = Kategori::all();
-
-        return view('kategori.index', ['kategoris' => $kategoris]);
+        return view('admin.kategori', ['kategoris' => $kategori_service->all()]);
     }
 
-    public function store(Request $request){
-        $input = $request->all();
+    public function store(Request $request, KategoriService $kategori_service){
+        try{
+            $kategori_service->store($request->nama_kategori);
 
-        $validator = Validator::make($input, [
-            'nama_kategori' => 'required'
-        ]);
-
-        if ($validator->fails()){
-            return redirect()->route("kategori")->with("success", "Nama Kategori harus diisi!");
+            return redirect()->route("kategori")->with('message', 'Kategori telah dibuat');
+        } catch (\Exception $e){
+            return redirect()->route("kategori")->with("message", $e->getMessage());
         }
-
-        $kategori = Kategori::create($input);
-
-        return redirect()->route("kategori")->with('success', 'Kategori telah dibuat');
     }
 
-    public function update(Request $request)
+    public function update(Request $request, KategoriService $kategori_service)
     {
-        $input = $request->all();
+        try{
+            $kategori_service->update($request->id, $request->nama_kategori);
 
-        $validator = Validator::make($input, [
-            'nama_kategori' => 'required'
-        ]);
-
-        if ($validator->fails()){
-            return redirect()->route("kategori")->with("success", "Nama Kategori harus diisi!");
+            return redirect()->route("kategori")->with('message', 'Kategori telah diupdate');
+        } catch (\Exception $e){
+            return redirect()->route("kategori")->with("message", $e->getMessage());
         }
-
-        $kategori = Kategori::find($request->id);
-        $kategori->nama_kategori = $input['nama_kategori'];
-        $kategori->save();
-
-        return redirect()->route("kategori")->with('success', 'Kategori telah diupdate');
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, KategoriService $kategori_service)
     {
-        $kategori = Kategori::find($request->id);
-        $kategori->delete();
+        try{
+            $kategori_service->destroy($request->id);
 
-        return redirect()->route("kategori")->with('success', 'Kategori telah dihapus');
+            return redirect()->route("kategori")->with('message', 'Kategori telah dihapus');
+        } catch (\Exception $e){
+            return redirect()->route("kategori")->with("message", $e->getMessage());
+        }
     }
 }

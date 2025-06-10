@@ -30,7 +30,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Interface
+                CRUD
             </div>
 
             <li class="nav-item">
@@ -41,22 +41,39 @@
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="/menu">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Menu</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="/meja">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Meja</span></a>
             </li>
 
+            <div class="sidebar-heading">
+                Transaksi
+            </div>
+
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="/metode_pembayaran">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Metode Pembayaran</span></a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="/reservasi">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Reservasi</span></a>
+            </li>
+
+
+            <li class="nav-item">
+                <a class="nav-link" href="/order">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Order</span></a>
             </li>
 
             <!-- Divider -->
@@ -217,16 +234,16 @@
     </div>
 
     <!-- Modal -->
-    @if (session('success'))
+    @if (session('message'))
         <div class="modal fade" id="successModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="successModalLabel">Success</h5>
+                        <h5 class="modal-title" id="successModalLabel">Message</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        {{ session('success') }}
+                        {{ session('message') }}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

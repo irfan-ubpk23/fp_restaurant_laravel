@@ -18,6 +18,9 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                 </div>
+                                @if (session('message'))
+                                <h6 class="text-danger">{{ session('message') }}</h6>
+                                @endif
                                 <form class="user" method="POST" action="/login">
                                     @csrf
                                     <div class="form-group">
@@ -25,12 +28,14 @@
                                             name="email"
                                             id="InputEmail" aria-describedby="emailHelp"
                                             placeholder="Enter Email Address..."
+                                            value="{{ old('email') }}"
                                             required>
                                     </div>
                                     <div class="form-group">
                                         <input type="password" class="form-control form-control-user"
                                             name="password"
                                             id="InputPassword" placeholder="Password"
+                                            value="{{ old('password') }}"
                                             required>
                                     </div>
                                     <div class="form-group">

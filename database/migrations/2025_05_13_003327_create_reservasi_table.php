@@ -16,8 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('meja_id');
 
-            $table->timestamp('dari', precision:0)->nullable();
-            $table->timestamp('sampai', precision:0)->nullable();
+            $table->timestamp('tanggal_dan_jam', precision:0)->nullable();
             $table->enum('status_reservasi', ['menunggu', 'sudah', 'tidak_hadir']);
 
             $table->timestamps();

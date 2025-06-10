@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AuthService;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -12,23 +15,22 @@ class AuthController extends Controller
     }
 
 
-    public function login(Request $request){
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password]))
-        {
-            $user = Auth::user();
-            $success['token'] = $user->createToken('login_token')->plainTextToken;
-            $success['username'] = $user->username;
+    public function login(Request $request, AuthService $authService){
+        try {
+            $user = $authService->login($request->email, $request->password);
+            Log::info("User log in", ['user_id' => $user->id]);
 
             return redirect()->intended('dashboard');
-        } else
-        {
-            return $this->sendError('Unauthorised', ['error'=>'Unauthorised']);
+        } catch (\Exception $e){
+            return back()->with("message", $e->getMessage())->withInput();
         }
     }
 
 
     public function logout(Request $request){
+        $user = Auth::user();
         Auth::logout();
+        Log::info("User log out", ['user_id' => $user->id]);
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

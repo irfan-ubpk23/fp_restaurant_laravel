@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Menu extends Model
 {
@@ -15,8 +16,8 @@ class Menu extends Model
         'waktu_saji'
     ];
 
-    public function kategori()
+    public function kategori() : HasOne
     {
-        return $this->belongsTo(Kategori::class, 'id', 'id_kategori');
+        return $this->hasOne(Kategori::class, 'id', 'id_kategori');
     }
 }
