@@ -30,7 +30,6 @@
                 </div>
                 <div class="modal-body container">
                     <div class="row row-cols-2 align-items-center" id="inputModalField">
-                        {{ $input_fields }}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -55,7 +54,6 @@
                 </div>
                 <div class="modal-body container">
                     <div class="row row-cols-2 align-items-center" id="editModalField">
-                        {{ $input_fields }}
                     </div>
                 </div>
                 <div class="modal-footer">

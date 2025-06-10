@@ -15,7 +15,7 @@
 
         <label for="" class="col mt-4">Details</label>
         <br>
-        <div class="col-12" id="details">
+        <div class="col-12 field" id="details">
             <div class="row row-cols-2 border mx-2" id="detail">
                 <label for="menu_id">Menu Id</label>
                 <label class="menu_id"></label>
@@ -31,9 +31,9 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Order</h1>
-        <button type="button" id="add-btn" class="btn btn-primary">
+        <!-- <button type="button" id="add-btn" class="btn btn-primary">
             <i class="fa-solid fa-plus fa-sm text-white-50"></i> Tambah Baru
-        </button>
+        </button> -->
     </div>
 
     <!-- Content Row -->
@@ -66,13 +66,13 @@
                                     <td>{{ $order->status_order }}</td>
                                     <td>{{ $order->keterangan }}</td>
                                     <td>
-                                        <button type="button" id="delete-btn" data-id="{{ $order->id }}" class="btn btn-danger btn-circle">
+                                        <!-- <button type="button" id="delete-btn" data-id="{{ $order->id }}" class="btn btn-danger btn-circle">
                                             <i class="fa fa-trash"></i>
                                         </button>
 
                                         <button type="button" id="edit-btn" data-id="{{ $order->id }}" data-datas="{{ $order->toJson() }}" class="btn btn-secondary btn-circle">
                                             <i class="fa-solid fa-pen"></i>
-                                        </button>
+                                        </button> -->
 
                                         <button type="button" id="show-btn" data-datas="{{ $order->toJson() }}" class="btn btn-primary btn-circle">
                                             <i class="fa-solid fa-pen"></i>

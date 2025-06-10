@@ -7,7 +7,8 @@
 
 @section('content')
     @component("components.CRUDModal")
-        @slot("input_fields")
+        @slot("fields")
+            <label id="id_kategori" class="field" data-field-type="select" data-field-select-list="{{ $kategoris }}"></label>
             <label for="id_kategori">Kategori</label>
             <select class="form-select" id="id_kategori" name="id_kategori" placeholder="Kategori" required>
                 @if($kategoris)

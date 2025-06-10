@@ -7,9 +7,8 @@
 
 @section('content')
     @component("components.CRUDModal")
-        @slot("input_fields")
-        <label for="batas_orang">Batas Orang</label>    
-        <input type="number" class="form-control" id="batas_orang" name="batas_orang" required>
+        @slot("fields")
+        <label id="batas_orang" class="field" data-field-type="number"></label>
         @endslot
     @endcomponent
 

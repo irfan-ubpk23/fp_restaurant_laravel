@@ -7,9 +7,10 @@
 
 @section('content')
     @component("components.CRUDModal")
-        @slot("input_fields")
-        <label for="nama_kategori">Nama Kategori</label>    
-        <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" placeholder="Nama Kategori" required>
+        @slot("fields")
+        <!-- <label for="nama_kategori">Nama Kategori</label>     -->
+        <label id="nama_kategori" class="field"></label>
+        <!-- <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" placeholder="Nama Kategori" required> -->
         @endslot
     @endcomponent
 

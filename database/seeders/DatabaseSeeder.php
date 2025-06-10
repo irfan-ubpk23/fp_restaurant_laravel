@@ -66,5 +66,11 @@ class DatabaseSeeder extends Seeder
             'menu_id' => '1',
             'jumlah' => '2'
         ]);
+
+        DB::table('order_detail')->insert([
+            "order_id" => '1',
+            'menu_id' => '1',
+            'jumlah' => '5'
+        ]);
     }
 }

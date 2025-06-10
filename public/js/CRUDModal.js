@@ -10,7 +10,9 @@ if (crud_target_url){
     let allowed_inputs = ["INPUT", "SELECT"];
 
     // initialize events
-    document.getElementById("add-btn").addEventListener("click", show_input_form);
+    if (document.getElementById("add-btn")){
+        document.getElementById("add-btn").addEventListener("click", show_input_form);
+    }
     
     document.querySelectorAll("#delete-btn").forEach((e) => {
         e.addEventListener("click", () => show_delete_form(e));
@@ -23,33 +25,63 @@ if (crud_target_url){
     });
     
     // initialize input fields
-    let fields = document.getElementById("showModalField").children;
-    for (let i = 0;i < fields.length;i++){
-        let field = fields[i];
+    document.addEventListener('DOMContentLoaded', () => {
+        let show_modal_field_root = document.getElementById('showModalField');
+        let fields = Array.from(show_modal_field_root.children);
+        // show_modal_field_root.replaceChildren();
         
-        if (field.classList.contains('field')){
-            if (field.tagName == "LABEL" || field.tagName == 'DIV'){
-                field_ids.push(field.getAttribute('id'));
-                
-                if (field.tagName == "LABEL"){
-                    ["input", "edit"].forEach((mode) => {
-                        let root = document.getElementById(mode + "ModalField");
-                        console.log(root);
-                        
-                        let label = document.createElement('label');
-                        label.innerText = field.getAttribute('id');
-                        label.setAttribute('for', mode + field.getAttribute('id'));
-                        root.appendChild(label);
-                        
-                        let input = document.createElement('input');
-                        input.setAttribute('id', mode + field.getAttribute('id'));
-                        input.setAttribute('class', 'form-control');
-                        root.appendChild(input);
-                    })
+        for (let i = 0;i < fields.length;i++){
+            let field = fields[i];
+            show_modal_field_root.removeChild(field);
+            if (field.classList.contains('field')){
+                if (field.tagName == "LABEL" || field.tagName == 'DIV'){
+                    field_ids.push(field.getAttribute('id'));
+                    
+                    if (field.tagName == "LABEL"){
+                        ["input", "edit"].forEach((mode) => {
+                            let root = document.getElementById(mode + "ModalField");
+                            
+                            let label = document.createElement('label');
+                            label.innerText = field.getAttribute('id');
+                            label.setAttribute('for', mode + field.getAttribute('id'));
+                            root.appendChild(label);
+                            
+                            let input;
+                            if (field.getAttribute("data-field-type") == "select"){
+                                input = document.createElement('select');
+                                input.setAttribute('class', 'form-select');
+
+                                field.getAttribute('data-field-select-list').split(" ").forEach((option_name) => {
+                                    let option = document.createElement('option');
+                                    option.setAttribute('value', option_name);
+                                    option.innerText = option_name;
+                                    input.appendChild(option);
+                                });
+                            }
+                            else{
+                                input = document.createElement('input');
+                                
+                                let type = "text";
+                                if (field.getAttribute('data-field-type') != ""){
+                                    type = field.getAttribute('data-field-type');
+                                }
+                                input.setAttribute('type', type);
+                                input.setAttribute('class', 'form-control');
+                            }
+                            input.setAttribute('id', mode + field.getAttribute('id'));
+                            input.setAttribute('name', field.getAttribute('id'));
+                            root.appendChild(input);
+                        });
+                        let show_label = document.createElement('label');
+                        show_label.setAttribute('id', 'show_' + field.getAttribute('id'));
+                        show_label.innerText = field.getAttribute('id');
+                        show_modal_field_root.appendChild(show_label);
+                    }
                 }
             }
-        }
-    };
+            show_modal_field_root.appendChild(field);
+        };
+    });
 
     let inputs = document.getElementById("inputModalField").children;
     for (let i = 0;i < inputs.length;i++){
@@ -81,6 +113,7 @@ if (crud_target_url){
             
             if (typeof data === 'object'){
                 let base_row = document.getElementById(field_id).children[0];
+                
                 data.forEach((row_data) =>{
                     let new_row = base_row.cloneNode(true);
                     base_row.after(new_row);
@@ -112,15 +145,14 @@ if (crud_target_url){
     }
     
     function show_edit_form(button){
-        editModal.show()
+        editModal.show();
         // change form's action
         document.getElementById("editModalForm").action = crud_target_url + button.getAttribute('data-id');
         // parse json object data from table
         let datas = JSON.parse(button.getAttribute("data-datas"));
         
-        input_field_ids.forEach((input_field_id) => {
-            document.getElementById(input_field_id).value = datas[input_field_id];
+        field_ids.forEach((field_id) => {
+            document.getElementById('edit' + field_id).value = datas[field_id];
         });
-        // document.getElementById("nama_kategori").value = datas.nama_kategori;
     }
 }
