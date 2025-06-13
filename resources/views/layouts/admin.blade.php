@@ -8,82 +8,131 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+                <div class="sidebar-brand-icon">
+                    <i class="fa-solid fa-desktop"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">{{ Auth::user()->role }}</div>
             </a>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="/dashboard">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
-            </li>
+            @if(Auth::user()->role == "admin")
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item
+                @if (Request::path() == "dashboard")
+                    active
+                @endif
+                ">
+                    <a class="nav-link" href="/dashboard">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Dashboard</span></a>
+                </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                CRUD
-            </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    CRUD
+                </div>
 
-            <li class="nav-item">
-                <a class="nav-link" href="/kategori">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Kategori</span></a>
-            </li>
+                <li class="nav-item
+                @if (Request::path() == "kategori")
+                    active
+                @endif
+                ">
+                    <a class="nav-link" href="/kategori">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Kategori</span></a>
+                </li>
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="/menu">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Menu</span></a>
-            </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item
+                @if (Request::path() == "menu")
+                    active
+                @endif
+                ">
+                    <a class="nav-link" href="/menu">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Menu</span></a>
+                </li>
 
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="/meja">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Meja</span></a>
-            </li>
+                <!-- Nav Item - Tables -->
+                <li class="nav-item
+                @if (Request::path() == "meja")
+                    active
+                @endif
+                ">
+                    <a class="nav-link" href="/meja">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Meja</span></a>
+                </li>
 
-            <div class="sidebar-heading">
-                Transaksi
-            </div>
+                <li class="nav-item
+                @if (Request::path() == "user")
+                    active
+                @endif
+                ">
+                    <a class="nav-link" href="/user">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>User</span></a>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="/metode_pembayaran">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Metode Pembayaran</span></a>
-            </li>
-            
-            <li class="nav-item">
-                <a class="nav-link" href="/reservasi">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Reservasi</span></a>
-            </li>
+                <div class="sidebar-heading">
+                    Transaksi
+                </div>
+
+                <li class="nav-item
+                @if (Request::path() == "metode_pembayaran")
+                    active
+                @endif
+                ">
+                    <a class="nav-link" href="/metode_pembayaran">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Metode Pembayaran</span></a>
+                </li>
+                
+                <li class="nav-item
+                @if (Request::path() == "reservasi")
+                    active
+                @endif
+                ">
+                    <a class="nav-link" href="/reservasi">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Reservasi</span></a>
+                </li>
 
 
-            <li class="nav-item">
-                <a class="nav-link" href="/order">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Order</span></a>
-            </li>
+                <li class="nav-item
+                @if (Request::path() == "order")
+                    active
+                @endif
+                ">
+                    <a class="nav-link" href="/order">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Order</span></a>
+                </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
+                <li class="nav-item
+                @if (Request::path() == "pembayaran")
+                    active
+                @endif
+                ">
+                    <a class="nav-link" href="/pembayaran">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Pembayaran</span></a>
+                </li>
+                
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+                
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+            @endif
 
         </ul>
         <!-- End of Sidebar -->
@@ -101,20 +150,6 @@
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-
-                    <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -149,7 +184,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->username }}</span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
@@ -235,33 +270,17 @@
 
     <!-- Modal -->
     @if (session('message'))
-        <div class="modal fade" id="successModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="successModalLabel">Message</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        {{ session('message') }}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <x-modal modal-id="messageModal" title="Pesan" auto-show="true">
+            <x-slot:body>
+                {{ session('message') }}
+            </x-slot:body>
+        </x-modal>
     @endif
 @stop
 
-@section('js')
+@push('js')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
     <script>
         $("body").addClass('page-top');
-
-        if (document.getElementById('successModal')) {
-            let successModal = new bootstrap.Modal(document.getElementById("successModal"));
-            successModal.show();
-        }
     </script>
-@stop
+@endpush

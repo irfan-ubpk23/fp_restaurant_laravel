@@ -63,8 +63,8 @@
 
 @stop
 
-@section('js')
+@push('js')
     <script>
     $("body").addClass("bg-gradient-primary");
     </script>
-@stop
+@endpush

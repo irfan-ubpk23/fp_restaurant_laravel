@@ -5,9 +5,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MejaController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\MetodePembayaranController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PembayaranController;
 
 use App\Http\Middleware\UserIsAdmin;
 use App\Http\Middleware\UserIsDapur;
@@ -21,11 +23,12 @@ Route::middleware('guest')->group(function() {
     Route::post('/login', [AuthController::class, 'login']);
 });
 
-Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
+Route::middleware('auth')->group(function(){
+    Route::get('/logout', [AuthController::class, 'logout']);
+    Route::get('/dashboard', [HomeController::class, 'dashboard']);
+});
 
 Route::middleware(UserIsAdmin::class)->group(function() {
-    Route::get('/dashboard', [HomeController::class, 'dashboard']);
-    
     Route::controller(KategoriController::class)->group(function() {
         Route::get('/kategori', 'index')->name('kategori');
         Route::post("/kategori", 'store')->name("kategori.store");
@@ -46,6 +49,13 @@ Route::middleware(UserIsAdmin::class)->group(function() {
         Route::put('/meja/{id}', 'update')->name('meja.update');
         Route::delete('/meja/{id}', 'destroy')->name('meja.destroy');
     });
+
+    Route::controller(UserController::class)->group(function(){
+        Route::get("/user", "index")->name("user");
+        Route::post("/user", "store")->name("user.store");
+        Route::put("/user/{id}", "update")->name("user.update");
+        Route::delete("/user/{id}", "destroy")->name("user.destroy");
+    });
     
     Route::controller(ReservasiController::class)->group(function(){
         Route::get('/reservasi', 'index')->name('reservasi');
@@ -63,5 +73,9 @@ Route::middleware(UserIsAdmin::class)->group(function() {
         Route::post("/order", "store")->name("order.store");
         Route::put("/order/{id}", "update")->name("order.update");
         Route::delete("/order/{id}", "destroy")->name("order.destroy");
+    });
+
+    Route::controller(PembayaranController::class)->group(function(){
+        Route::get('/pembayaran', 'index')->name('pembayaran');
     });
 });

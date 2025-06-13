@@ -51,10 +51,12 @@ if (crud_target_url){
                                 input = document.createElement('select');
                                 input.setAttribute('class', 'form-select');
 
-                                field.getAttribute('data-field-select-list').split(" ").forEach((option_name) => {
+                                field.getAttribute('data-field-select-list').split(" ").forEach((option_datas) => {
+                                    option_datas = option_datas.split(':');
+
                                     let option = document.createElement('option');
-                                    option.setAttribute('value', option_name);
-                                    option.innerText = option_name;
+                                    option.setAttribute('value', option_datas[0]);
+                                    option.innerText = option_datas[1];
                                     input.appendChild(option);
                                 });
                             }
@@ -114,6 +116,12 @@ if (crud_target_url){
             if (typeof data === 'object'){
                 let base_row = document.getElementById(field_id).children[0];
                 
+                Array.from(document.getElementById(field_id).children).forEach((child)=>{
+                    if(child != base_row){
+                        child.remove();
+                    }
+                });
+
                 data.forEach((row_data) =>{
                     let new_row = base_row.cloneNode(true);
                     base_row.after(new_row);

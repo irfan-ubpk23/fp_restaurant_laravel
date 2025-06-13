@@ -47,6 +47,10 @@ class DatabaseSeeder extends Seeder
             'batas_orang' => '2'
         ]);
 
+        DB::table('metode_pembayaran')->insert([
+            'nama_metode' => 'qris'
+        ]);
+
         DB::table('reservasi')->insert([
             'user_id' => '1',
             'meja_id' => '1',
@@ -71,6 +75,15 @@ class DatabaseSeeder extends Seeder
             "order_id" => '1',
             'menu_id' => '1',
             'jumlah' => '5'
+        ]);
+
+        DB::table('pembayaran')->insert([
+            'order_id' => '1',
+            'metode_pembayaran_id' => '1',
+            'total_harga' => '2000',
+            'kode_transaksi' => '12516',
+            'status_pembayaran' => 'belum',
+            'bukti_pembayaran' => 'asdasd'
         ]);
     }
 }

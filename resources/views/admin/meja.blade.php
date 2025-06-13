@@ -1,16 +1,11 @@
 @extends('layouts.admin')
 
-@section('css')
-@parent
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.1/css/dataTables.dataTables.min.css">
-@stop
-
 @section('content')
-    @component("components.CRUDModal")
-        @slot("fields")
-        <label id="batas_orang" class="field" data-field-type="number"></label>
-        @endslot
-    @endcomponent
+    <x-crud-modal target-url="/meja/">
+        <x-slot:fields>
+            <label id="batas_orang" class="field" data-field-type="number"></label>
+        </x-slot:fields>
+    </x-crud-modal>
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -29,16 +24,15 @@
                     <h6 class="m-0 font-weight-bold text-primary">Meja Table</h6>
                 </div>
                 <div class="card-body" >
-                    <table id="datatable" class="display">
-                        <thead>
+                    <x-datatable datatable-id="datatable">
+                        <x-slot:head>
                             <tr>
                                 <th>Id</th>
                                 <th>Batas Orang</th>
                                 <th>Aksi</th>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @if ($mejas)
+                        </x-slot:head>
+                        <x-slot:body>
                             @foreach ($mejas as $meja)
                                 <tr>
                                     <td>{{ $meja->id }}</td>
@@ -54,24 +48,10 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            @endif
-                        </tbody>
-                    </table>
+                        </x-slot:body>
+                    </x-datatable>
                 </div>
             </div>
         </div>
     </div>
-@stop
-
-@section('js')
-    @parent
-    <script src="https://cdn.datatables.net/2.3.1/js/dataTables.min.js"></script>
-    <script>
-        $(document).ready( function() {
-            $('#datatable').DataTable();
-        });
-
-        var crud_target_url = "/meja/";
-    </script>
-    <script src="{{ asset('js/CRUDModal.js') }}"></script>
 @stop
