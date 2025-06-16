@@ -16,7 +16,7 @@ class KategoriController extends Controller
 
     public function store(Request $request, KategoriService $kategori_service){
         try{
-            $kategori_service->store($request->nama_kategori);
+            $kategori_service->store($request->all());
 
             return redirect()->route("kategori")->with('message', 'Kategori telah dibuat');
         } catch (\Exception $e){
@@ -27,7 +27,7 @@ class KategoriController extends Controller
     public function update(Request $request, KategoriService $kategori_service)
     {
         try{
-            $kategori_service->update($request->id, $request->nama_kategori);
+            $kategori_service->update($request->id, $request->all());
 
             return redirect()->route("kategori")->with('message', 'Kategori telah diupdate');
         } catch (\Exception $e){

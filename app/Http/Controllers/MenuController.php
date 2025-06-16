@@ -20,13 +20,7 @@ class MenuController extends Controller
     public function store(Request $request, MenuService $menu_service)
     {
         try{
-            $menu_service->store(
-                $request->id_kategori,
-                $request->nama_menu,
-                $request->harga_menu,
-                $request->status_menu,
-                $request->waktu_saji
-            );
+            $menu_service->store($request->all());
 
             return redirect()->route("menu")->with('message', 'Menu telah dibuat');
         } catch (\Exception $e){
@@ -37,14 +31,10 @@ class MenuController extends Controller
     public function update(Request $request, MenuService $menu_service)
     {
         try{
-            $menu_service->update(
-                $request->id,
-                $request->id_kategori,
-                $request->nama_menu,
-                $request->harga_menu,
-                $request->status_menu,
-                $request->waktu_saji
-            );
+            // if (isset($request["gambar_menu"]) == false){
+            //     unset($request["gambar_menu"]);
+            // }
+            $menu_service->update($request->id, $request->all());
 
             return redirect()->route("menu")->with('message', 'Menu telah diupdate');
         } catch (\Exception $e){

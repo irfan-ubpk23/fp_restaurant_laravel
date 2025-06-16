@@ -3,7 +3,8 @@
 @section('content')
     <x-crud-modal target-url="/meja/">
         <x-slot:fields>
-            <label id="batas_orang" class="field" data-field-type="number"></label>
+            <input type="text" name="nama_meja" id="nama_meja" placeholder="Nama Meja" class="form-control">
+            <input type="number" name="batas_orang" id="batas_orang" placeholder="Batas Orang" class="form-control">
         </x-slot:fields>
     </x-crud-modal>
 
@@ -28,6 +29,7 @@
                         <x-slot:head>
                             <tr>
                                 <th>Id</th>
+                                <th>Nama Meja</th>
                                 <th>Batas Orang</th>
                                 <th>Aksi</th>
                             </tr>
@@ -36,6 +38,7 @@
                             @foreach ($mejas as $meja)
                                 <tr>
                                     <td>{{ $meja->id }}</td>
+                                    <td>{{ $meja->nama_meja }}</td>
                                     <td>{{ $meja->batas_orang }}</td>
                                     <td>
                                         <button type="button" id="delete-btn" data-id="{{ $meja->id }}" class="btn btn-danger btn-circle">

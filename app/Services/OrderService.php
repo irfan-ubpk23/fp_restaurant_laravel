@@ -22,22 +22,15 @@ class OrderService
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         return Order::find($id);
     }
 
 
-    public function store($user_id, $nomor_antrian, $status_order, $keterangan) : Order
-    {
-        $params = [
-            "user_id" => $user_id,
-            "nomor_antrian" => $nomor_antrian,
-            "status_order" => $status_order,
-            "keterangan" => $keterangan,
-        ];
-        
+    public function store($params) : Order
+    {   
         $validator = Validator::make($params, [
             "user_id" => "required",
             "nomor_antrian" => "required",
@@ -46,40 +39,42 @@ class OrderService
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Batas Orang harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $meja = Order::create($params);
         return $meja;
     }
 
-    public function update($id, $user_id, $nomor_antrian, $status_order, $keterangan) : Order
+    public function update($id, $params) : Order
     {
-        $params = [
-            "id" => $id,
-            "user_id" => $user_id,
-            "nomor_antrian" => $nomor_antrian,
-            "status_order" => $status_order,
-            "keterangan" => $keterangan,
-        ];
+        $params["id"] = $id;
         
         $validator = Validator::make($params, [
             "id" => "required",
-            "user_id" => "required",
-            "nomor_antrian" => "required",
-            "status_order" => "required",
-            "keterangan" => "required"
+            "user_id" => "",
+            "nomor_antrian" => "",
+            "status_order" => "",
+            "keterangan" => ""
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id dan Batas Orang harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $order = Order::find($id);
-        $order->user_id = $params['user_id'];
-        $order->nomor_antrian = $params['nomor_antrian'];
-        $order->status_order = $params['status_order'];
-        $order->keterangan = $params['keterangan'];
+        if (isset($params["user_id"])){
+            $order->user_id = $params['user_id'];
+        }
+        if (isset($params["nomor_antrian"])){
+            $order->nomor_antrian = $params['nomor_antrian'];
+        }
+        if (isset($params["status_order"])){
+            $order->status_order = $params['status_order'];
+        }
+        if (isset($params["keterangan"])){
+            $order->keterangan = $params['keterangan'];
+        }
         $order->save();
 
         return $order;
@@ -92,7 +87,7 @@ class OrderService
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $order = Order::find($id);

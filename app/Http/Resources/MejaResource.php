@@ -16,6 +16,7 @@ class MejaResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            "nama_meja" => $this->nama_meja,
             'batas_orang' => $this->batas_orang
         ];
     }

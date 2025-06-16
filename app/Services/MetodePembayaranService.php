@@ -21,32 +21,30 @@ class MetodePembayaranService
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         return MetodePembayaran::find($id);
     }
 
 
-    public function store($nama_metode) : MetodePembayaran
+    public function store($params) : MetodePembayaran
     {
-        $params = ["nama_metode" => $nama_metode];
-        
         $validator = Validator::make($params, [
             'nama_metode' => 'required'
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("nama_metode harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $metode_pembayaran = MetodePembayaran::create($params);
         return $metode_pembayaran;
     }
 
-    public function update($id, $nama_metode) : MetodePembayaran
+    public function update($id, $params) : MetodePembayaran
     {
-        $params = ["id" => $id, "nama_metode" => $nama_metode];
+        $params["id"] = $id;
         
         $validator = Validator::make($params, [
             "id" => "required",
@@ -54,7 +52,7 @@ class MetodePembayaranService
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id dan nama_metode harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $metode_pembayaran = MetodePembayaran::find($id);
@@ -71,7 +69,7 @@ class MetodePembayaranService
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $metode_pembayaran = MetodePembayaran::find($id);

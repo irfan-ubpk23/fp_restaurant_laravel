@@ -8,7 +8,6 @@ use App\Http\Controllers\MejaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\MetodePembayaranController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PembayaranController;
 
 use App\Http\Middleware\UserIsAdmin;
@@ -66,13 +65,6 @@ Route::middleware(UserIsAdmin::class)->group(function() {
         Route::post("/metode_pembayaran", 'store')->name("metode_pembayaran.store");
         Route::put("/metode_pembayaran/{id}", "update")->name("metode_pembayaran.update");
         Route::delete("/metode_pembayaran/{id}", "destroy")->name("metode_pembayaran.destroy");
-    });
-
-    Route::controller(OrderController::class)->group(function(){
-        Route::get("/order", "index")->name("order");
-        Route::post("/order", "store")->name("order.store");
-        Route::put("/order/{id}", "update")->name("order.update");
-        Route::delete("/order/{id}", "destroy")->name("order.destroy");
     });
 
     Route::controller(PembayaranController::class)->group(function(){

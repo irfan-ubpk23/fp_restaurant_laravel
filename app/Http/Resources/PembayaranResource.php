@@ -22,7 +22,7 @@ class PembayaranResource extends JsonResource
             'kode_transaksi' => $this->kode_transaksi,
             'status_pembayaran' => $this->status_pembayaran,
             'bukti_pembayaran' => $this->bukti_pembayaran,
-            
+            'order' => new OrderResource($this->order),
             'metode_pembayaran' => $this->metode_pembayaran
         ];
     }

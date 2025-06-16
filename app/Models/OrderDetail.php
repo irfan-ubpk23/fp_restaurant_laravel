@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class OrderDetail extends Model
 {
@@ -12,4 +13,9 @@ class OrderDetail extends Model
         'menu_id',
         'jumlah'
     ];
+
+    public function menu() : HasOne
+    {
+        return $this->HasOne(Menu::class, 'id', 'menu_id');
+    }
 }

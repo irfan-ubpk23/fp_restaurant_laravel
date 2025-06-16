@@ -22,22 +22,14 @@ class UserService
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         return User::find($id);
     }
 
-    public function store($username, $email, $no_hp, $password, $role) : User
+    public function store($params) : User
     {
-        $params = [
-            "username" => $username,
-            "email" => $email,
-            "no_hp" => $no_hp,
-            "password" => bcrypt($password),
-            "role" => $role
-        ];
-        
         $validator = Validator::make($params, [
             "username" => "required",
             "email" => "required",
@@ -45,45 +37,49 @@ class UserService
             "password" => "required",
             "role" => "required"
         ]);
-
+        
         if ($validator->fails()){
-            throw new \Exception("Nama User harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
-
+        
+        $params["password"] = bcrypt($params["password"]);
         $user = User::create($params);
         return $user;
     }
 
-    public function update($id, $username, $email, $no_hp, $password, $role) : User
+    public function update($id, $params) : User
     {
-        $params = [
-            "id" => $id,
-            "username" => $username,
-            "email" => $email,
-            "no_hp" => $no_hp,
-            "password" => bcrypt($password),
-            "role" => $role
-        ];
+        $params["id"] = $id;
         
         $validator = Validator::make($params, [
             "id" => "required",
-            "username" => "required",
-            "email" => "required",
-            "no_hp" => "required",
-            "password" => "required",
-            "role" => "required"
+            "username" => "",
+            "email" => "",
+            "no_hp" => "",
+            "password" => "",
+            "role" => ""
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id dan Nama User harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $user = User::find($id);
-        $user->username = $params['username'];
-        $user->email = $params['email'];
-        $user->no_hp = $params['no_hp'];
-        $user->password = $params['password'];
-        $user->role = $params['role'];
+        if (isset($params["username"])){
+            $user->username = $params['username'];
+        }
+        if (isset($params["email"])){
+            $user->email = $params['email'];
+        }
+        if (isset($params["no_hp"])){
+            $user->no_hp = $params['no_hp'];
+        }
+        if (isset($params["password"])){
+            $user->password = bcrypt($params["password"]);
+        }
+        if (isset($params["role"])){
+            $user->role = $params['role'];
+        }
         $user->save();
 
         return $user;

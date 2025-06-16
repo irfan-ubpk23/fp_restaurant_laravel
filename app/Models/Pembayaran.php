@@ -17,8 +17,13 @@ class Pembayaran extends Model
         'bukti_pembayaran'
     ];
 
+    public function order() :HasOne
+    {
+        return $this::HasOne(Order::class, "id", "order_id");
+    }
+
     public function metode_pembayaran() : HasOne
     {
-        return $this::HasOne(MetodePembayaran::class, 'id', 'order_id');
+        return $this::HasOne(MetodePembayaran::class, 'id', 'metode_pembayaran_id');
     }
 }

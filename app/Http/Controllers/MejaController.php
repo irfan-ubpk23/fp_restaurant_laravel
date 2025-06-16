@@ -15,7 +15,7 @@ class MejaController extends Controller
 
     public function store(Request $request, MejaService $meja_service){
         try{
-            $meja_service->store($request->batas_orang);
+            $meja_service->store($request->all());
 
             return redirect()->route("meja")->with('message', 'Meja telah dibuat');
         } catch (\Exception $e){
@@ -26,7 +26,7 @@ class MejaController extends Controller
     public function update(Request $request, MejaService $meja_service)
     {
         try{
-            $meja_service->update($request->id, $request->batas_orang);
+            $meja_service->update($request->id, $request->all());
 
             return redirect()->route("meja")->with('message', 'Meja telah diupdate');
         } catch (\Exception $e){

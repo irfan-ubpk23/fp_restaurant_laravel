@@ -21,22 +21,15 @@ class ReservasiService
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         return Reservasi::find($id);
     }
 
 
-    public function store($user_id, $meja_id, $tanggal_dan_jam, $status_reservasi) : Reservasi
-    {
-        $params = [
-            "user_id" => $user_id,
-            "meja_id" => $meja_id,
-            "tanggal_dan_jam" => $tanggal_dan_jam,
-            "status_reservasi" => $status_reservasi
-        ];
-        
+    public function store($params) : Reservasi
+    {   
         $validator = Validator::make($params, [
             "user_id" => "required",
             "meja_id" => "required",
@@ -45,40 +38,42 @@ class ReservasiService
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $reservasi = Reservasi::create($params);
         return $reservasi;
     }
 
-    public function update($id, $user_id, $meja_id, $tanggal_dan_jam, $status_reservasi) : Reservasi
+    public function update($id, $params) : Reservasi
     {
-        $params = [
-            "id" => $id,
-            "user_id" => $user_id,
-            "meja_id" => $meja_id,
-            "tanggal_dan_jam" => $tanggal_dan_jam,
-            "status_reservasi" => $status_reservasi
-        ];
+        $params["id"] = $id;
         
         $validator = Validator::make($params, [
             "id" => "required",
-            "user_id" => "required",
-            "meja_id" => "required",
-            "tanggal_dan_jam" => "required",
-            "status_reservasi" => "required"
+            "user_id" => "",
+            "meja_id" => "",
+            "tanggal_dan_jam" => "",
+            "status_reservasi" => ""
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $reservasi = Reservasi::find($id);
-        $reservasi->user_id = $params['user_id'];
-        $reservasi->meja_id = $params['meja_id'];
-        $reservasi->tanggal_dan_jam = $params['tanggal_dan_jam'];
-        $reservasi->status_reservasi = $params['status_reservasi'];
+        if (isset($params["user_id"])){
+            $reservasi->user_id = $params['user_id'];
+        }
+        if (isset($params["meja_id"])){
+            $reservasi->meja_id = $params['meja_id'];
+        }
+        if (isset($params["tanggal_dan_jam"])){
+            $reservasi->tanggal_dan_jam = $params['tanggal_dan_jam'];
+        }
+        if (isset($params["status_reservasi"])){
+            $reservasi->status_reservasi = $params['status_reservasi'];
+        }
         $reservasi->save();
 
         return $reservasi;
@@ -91,7 +86,7 @@ class ReservasiService
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $reservasi = Reservasi::find($id);

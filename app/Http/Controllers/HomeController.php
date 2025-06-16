@@ -19,10 +19,12 @@ class HomeController extends Controller
 
     public function dashboard(OrderService $order_service){
         $role = Auth::user()->role;
-        if ($role == "admin"){
+        if ($role === "admin"){
             return view("admin.index");
-        }else if($role == "dapur"){
+        }else if($role === "dapur"){
             return view("dapur.index", ["orders"=>$order_service->all()]);
+        }else{
+            return back();
         }
     }
 

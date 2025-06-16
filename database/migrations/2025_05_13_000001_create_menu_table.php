@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('menu', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_kategori');
-
             $table->string("nama_menu");
+            $table->string("gambar_menu");
             $table->integer('harga_menu');
             $table->enum('status_menu', ['ada', 'habis']);
             $table->integer('waktu_saji');

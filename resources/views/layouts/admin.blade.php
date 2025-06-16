@@ -59,6 +59,16 @@
                         <span>Menu</span></a>
                 </li>
 
+                <li class="nav-item
+                @if (Request::path() == "user")
+                    active
+                @endif
+                ">
+                    <a class="nav-link" href="/user">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>User</span></a>
+                </li>
+
                 <!-- Nav Item - Tables -->
                 <li class="nav-item
                 @if (Request::path() == "meja")
@@ -68,16 +78,6 @@
                     <a class="nav-link" href="/meja">
                         <i class="fas fa-fw fa-table"></i>
                         <span>Meja</span></a>
-                </li>
-
-                <li class="nav-item
-                @if (Request::path() == "user")
-                    active
-                @endif
-                ">
-                    <a class="nav-link" href="/user">
-                        <i class="fas fa-fw fa-table"></i>
-                        <span>User</span></a>
                 </li>
 
                 <div class="sidebar-heading">
@@ -95,6 +95,16 @@
                 </li>
                 
                 <li class="nav-item
+                @if (Request::path() == "pembayaran")
+                    active
+                @endif
+                ">
+                    <a class="nav-link" href="/pembayaran">
+                        <i class="fas fa-fw fa-table"></i>
+                        <span>Pembayaran</span></a>
+                </li>
+
+                <li class="nav-item
                 @if (Request::path() == "reservasi")
                     active
                 @endif
@@ -104,26 +114,6 @@
                         <span>Reservasi</span></a>
                 </li>
 
-
-                <li class="nav-item
-                @if (Request::path() == "order")
-                    active
-                @endif
-                ">
-                    <a class="nav-link" href="/order">
-                        <i class="fas fa-fw fa-table"></i>
-                        <span>Order</span></a>
-                </li>
-
-                <li class="nav-item
-                @if (Request::path() == "pembayaran")
-                    active
-                @endif
-                ">
-                    <a class="nav-link" href="/pembayaran">
-                        <i class="fas fa-fw fa-table"></i>
-                        <span>Pembayaran</span></a>
-                </li>
                 
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
@@ -269,18 +259,31 @@
     </div>
 
     <!-- Modal -->
-    @if (session('message'))
-        <x-modal modal-id="messageModal" title="Pesan" auto-show="true">
-            <x-slot:body>
-                {{ session('message') }}
-            </x-slot:body>
-        </x-modal>
-    @endif
+    <x-modal modal-id="messageModal" title="Pesan">
+        <x-slot:body>
+            <div id="messageModalBody">
+
+            </div>
+        </x-slot:body>
+    </x-modal>
 @stop
 
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
     <script>
         $("body").addClass('page-top');
+        
+        const messageModal = (new bootstrap.Modal("#messageModal"));
+        const messageModalbody = document.getElementById("messageModalBody");
+
+        function show_message(message) {
+            messageModal.show();
+            messageModalbody.innerText = message;
+        }
     </script>
+    @if (session('message'))
+    <script>
+        show_message("{{ session('message') }}");
+    </script>
+    @endif
 @endpush

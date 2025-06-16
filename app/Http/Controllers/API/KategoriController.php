@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\KategoriResource;
-use App\Models\Kategori;
+use App\Services\Kategori;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -13,63 +12,56 @@ use Illuminate\Support\Facades\Validator;
 
 class KategoriController extends BaseController
 {
-    public function index(): JsonResponse
+    public function index(KategoriService $kategori_service): JsonResponse
     {
-        $kategoris = Kategori::all();
-
-        return $this->sendResponse(KategoriResource::collection($kategoris));
-    }
-
-    public function store(Request $request) : JsonResponse
-    {
-        $input = $request->all();
-
-        $validator = Validator::make($input, [
-            'nama_kategori' => 'required'
-        ]);
-
-        if ($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
+        try{
+            return $this->sendResponse($kategori_service->all());
+        }catch(\Exception $e){
+            return $this->sendError($e->getMessage());
         }
-
-        $kategori = Kategori::create($input);
-
-        return $this->sendResponse(new KategoriResource($kategori));
     }
 
-    public function show($id): JsonResponse
+    public function store(Request $request, KategoriService $kategori_service) : JsonResponse
     {
-        $kategori = Kategori::find($id);
+        try{
+            $kategori = $kategori_service->store($request->all());
 
-        if (is_null($kategori)){
-            return $this->sendError('Kategori not Found.');
+            return $this->sendResponse($kategori, "Kategori berhasil dibuat");
+        }catch(\Exception $e){
+            return $this->sendError($e->getMessage());
         }
-
-        return $this->sendResponse(new KategoriResource($kategori));
     }
 
-    public function update(Request $request, Kategori $kategori): JsonResponse
+    public function show(Request $request, KategoriService $kategori_service): JsonResponse
     {
-        $input = $request->all();
+        try{
+            $kategori = $kategori_service->show($request->id);
 
-        $validator = Validator::make($input, [
-            'nama_kategori' => 'required'
-        ]);
-
-        if ($validator->fails()){
-            $this->sendError('Kategori not found.');
+            return $this->sendResponse($kategori, "Kategori berhasil dibuat");
+        }catch(\Exception $e){
+            return $this->sendError($e->getMessage());
         }
-
-        $kategori->nama_kategori = $input['nama_kategori'];
-        $kategori->save();
-
-        return $this->sendResponse(new KategoriResource($kategori));
     }
 
-    public function destroy(Kategori $kategori)
+    public function update(Request $request, KategoriService $kategori_service): JsonResponse
     {
-        $kategori->delete();
+        try{
+            $kategori = $kategori_service->show($request->id, $request->nama_kategori);
 
-        return $this->sendResponse([]);
+            return $this->sendResponse($kategori, "Kategori berhasil diupdate");
+        }catch(\Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
+
+    public function destroy(Request $request, KategoriService $kategori_service)
+    {
+        try{
+            $kategori = $kategori_service->destroy($request->id);
+
+            return $this->sendResponse($kategori, "Kategori berhasil dihapus");
+        }catch(\Exception $e){
+            return $this->sendError($e->getMessage());
+        }
     }
 }

@@ -20,7 +20,8 @@ class OrderResource extends JsonResource
             "nomor_antrian" => $this->nomor_antrian,
             "status_order" => $this->status_order,
             "keterangan" => $this->keterangan,
-            "details" => $this->details
+            "user" => new UserResource($this->user),
+            "details" => OrderDetailResource::collection($this->details)
         ];
     }
 }

@@ -3,7 +3,7 @@
 @section('content')
     <x-crud-modal target-url="/metode_pembayaran/">
         <x-slot:fields>
-            <label id="nama_metode" class="field"></label>
+            <input type="text" name="nama_metode" id="nama_metode" placeholder="Nama Metode" class="form-control">
         </x-slot:fields>
     </x-crud-modal>
 

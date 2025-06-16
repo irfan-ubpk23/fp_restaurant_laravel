@@ -17,6 +17,8 @@
 
 @pushIf($autoShow == "true", "js")
 <script>
-    new bootstrap.Modal("#{{ $modalId }}").show();
+    document.addEventListener("DOMContentLoaded", ()=>{
+        new bootstrap.Modal("#{{ $modalId }}").show();
+    });
 </script>
 @endPushIf

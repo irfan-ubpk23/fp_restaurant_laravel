@@ -8,6 +8,7 @@ class Meja extends Model
 {
     protected $table = 'meja';
     protected $fillable = [
+        'nama_meja',
         'batas_orang'
     ];
 }

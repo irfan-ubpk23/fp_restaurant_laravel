@@ -22,39 +22,36 @@ class KategoriService
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         return Kategori::find($id);
     }
 
-    public function store($nama_kategori) : Kategori
+    public function store($params) : Kategori
     {
-        $params = ["nama_kategori" => $nama_kategori];
-        
         $validator = Validator::make($params, [
             'nama_kategori' => 'required'
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Nama Kategori harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $kategori = Kategori::create($params);
         return $kategori;
     }
 
-    public function update($id, $nama_kategori) : Kategori
+    public function update($id, $params) : Kategori
     {
-        $params = ["id" => $id, "nama_kategori" => $nama_kategori];
-        
+        $params["id"] = $id;
         $validator = Validator::make($params, [
             "id" => "required",
             'nama_kategori' => 'required'
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id dan Nama Kategori harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $kategori = Kategori::find($id);
@@ -71,7 +68,7 @@ class KategoriService
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $kategori = Kategori::find($id);

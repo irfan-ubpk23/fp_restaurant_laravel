@@ -3,7 +3,7 @@
 @section('content')
     <x-crud-modal target-url="/kategori/">
         <x-slot:fields>
-            <label id="nama_kategori" class="field"></label>
+            <input type="text" name="nama_kategori" id="nama_kategori" placeholder="Nama Kategori" class="form-control">
         </x-slot:fields>
     </x-crud-modal>
 

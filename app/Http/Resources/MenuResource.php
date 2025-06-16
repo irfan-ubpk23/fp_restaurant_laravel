@@ -18,6 +18,7 @@ class MenuResource extends JsonResource
             'id' => $this->id,
             'id_kategori' => $this->id_kategori,
             'nama_menu' => $this->nama_menu,
+            'gambar_menu' => $this->gambar_menu,
             'harga_menu' => $this->harga_menu,
             'status_menu' => $this->status_menu,
             'waktu_saji' => $this->waktu_saji,

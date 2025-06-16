@@ -1,6 +1,40 @@
 @extends('layouts.admin')
 
 @section('content')
+    <div class="row row-cols-2 border" id="menuRow" style="display:none">
+        <img data-field-src="{{ asset("") }}" alt="" id="gambar_menu" class="col-4 field">
+
+        <div class="col-8 row row-cols-2 my-auto">
+            <label for="nama_menu" class="col field">Menu</label>
+            <p id="nama_menu" class="col field"></p>
+    
+            <label for="jumlah" class="col field">Jumlah</label>
+            <p id="jumlah" class="col field"></p>
+        </div>
+    </div>
+    <x-modal modalId="orderModal" title="Order Data">
+        <x-slot:body>
+            <div class="container">
+                <div class="row row-cols-2" id="orderField">
+                    <label for="user">User</label>
+                    <p id="user" class="order-field"></p>
+                    
+                    <label for="nomor_antrian">Nomor Antrian</label>
+                    <p id="nomor_antrian" class="order-field"></p>
+                    
+                    <label for="status_order">Status Order</label>
+                    <p id="status_order" class="order-field"></p>
+                    
+                    <label for="keterangan">Keterangan</label>
+                    <p id="keterangan" class="order-field"></p>
+
+                    <p class="mt-3">Item: </p>
+                    <div class="col-12" id="menuField"></div>
+                </div>
+            </div>
+        </x-slot:body>
+    </x-modal>
+
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Pembayaran</h1>
@@ -19,7 +53,7 @@
                         <x-slot:head>
                             <tr>
                                 <th>Id</th>
-                                <th>Order Id</th>
+                                <th>Order</th>
                                 <th>Metode Pembayaran</th>
                                 <th>Total Harga</th>
                                 <th>Kode Transaksi</th>
@@ -31,7 +65,11 @@
                             @foreach ($pembayarans as $pembayaran)
                                 <tr>
                                     <td>{{ $pembayaran->id }}</td>
-                                    <td>{{ $pembayaran->order_id }}</td>
+                                    <td>
+                                        <button class="btn btn-circle btn-primary" id="show-order-btn" data-datas="{{ $pembayaran->toJson() }}">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </td>
                                     <td>{{ $pembayaran->metode_pembayaran->nama_metode }}</td>
                                     <td>{{ $pembayaran->total_harga }}</td>
                                     <td>{{ $pembayaran->kode_transaksi }}</td>
@@ -46,3 +84,63 @@
         </div>
     </div>
 @stop
+
+@push("js")
+<script>
+    document.addEventListener("DOMContentLoaded", ()=>{
+        const orderModal = new bootstrap.Modal("#orderModal");
+        const menuRow = document.getElementById("menuRow");
+        const menuField = document.getElementById("menuField");
+
+        document.querySelectorAll("#show-order-btn").forEach((e) => {
+            e.addEventListener("click", ()=>show_order(e));
+        });
+        
+        function show_order(button){
+            orderModal.show();
+            const order_data = JSON.parse(button.getAttribute("data-datas"))["order"];
+            
+            document.querySelectorAll("#orderField .order-field").forEach((e)=>{
+                if (e.id == "user"){
+                    e.innerText = ":" + order_data["user"]["username"] + "(" + order_data["user"]["role"] + ")";
+                }else{
+                    e.innerText = ":" + order_data[e.id];
+                }
+            })
+
+            menuField.innerHTML = "";
+            const detail_fragment = document.createDocumentFragment();
+            for (let index = 0; index < order_data['details'].length; index++) {
+                const row_data = order_data['details'][index];
+
+                const row = menuRow.cloneNode(true);
+                row.style.cssText="";
+                
+                row.querySelectorAll(".field").forEach((child) => {
+                    if (child.tagName == "LABEL"){
+                        child.htmlFor += index;
+                    }else{
+                        switch (child.id) {
+                            case "gambar_menu":
+                                child.src = child.getAttribute("data-field-src") + row_data["menu"]["gambar_menu"];
+                                break;
+                            case "nama_menu":
+                                child.innerText = ":" + row_data["menu"]["nama_menu"];
+                                break;
+                            case "jumlah":
+                                child.innerText = ":" + row_data["jumlah"];
+                                break;
+                            default:
+                                break;
+                        }
+                        child.id += index;
+                    }
+                });
+                
+                detail_fragment.appendChild(row);
+            };
+            menuField.appendChild(detail_fragment);
+        }
+    });
+</script>
+@endpush

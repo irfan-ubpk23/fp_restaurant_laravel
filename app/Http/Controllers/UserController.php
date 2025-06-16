@@ -15,13 +15,7 @@ class UserController extends Controller
 
     public function store(Request $request, UserService $user_service){
         try{
-            $user_service->store(
-                $request->username,
-                $request->email,
-                $request->no_hp,
-                $request->password,
-                $request->role
-            );
+            $user_service->store($request->all());
 
             return redirect()->route("user")->with('message', 'User telah dibuat');
         } catch (\Exception $e){
@@ -32,13 +26,7 @@ class UserController extends Controller
     public function update(Request $request, UserService $user_service)
     {
         try{
-            $user_service->update(
-                $request->id, 
-                $request->username,
-                $request->email,
-                $request->no_hp,
-                $request->password,
-                $request->role);
+            $user_service->update($request->id,$request->all());
 
             return redirect()->route("user")->with('message', 'User telah diupdate');
         } catch (\Exception $e){

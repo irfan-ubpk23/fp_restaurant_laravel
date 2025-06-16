@@ -31,6 +31,14 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin'
         ]);
 
+        DB::table('users')->insert([
+            'username' => 'dapur',
+            'email' => 'dapur@gmail.com',
+            'password' => bcrypt('123'),
+            'no_hp' => '123125',
+            'role' => 'dapur'
+        ]);
+
         DB::table('kategori')->insert([
             'nama_kategori' => 'makanan'
         ]);
@@ -38,12 +46,14 @@ class DatabaseSeeder extends Seeder
         DB::table('menu')->insert([
             "id_kategori" => "1",
             "nama_menu" => "mie ayam",
+            "gambar_menu" => "images/cocaine.jpeg",
             "harga_menu" => "15000",
             "status_menu" => "ada",
             "waktu_saji" => "5"
         ]);
 
         DB::table('meja')->insert([
+            "nama_meja" => "1",
             'batas_orang' => '2'
         ]);
 

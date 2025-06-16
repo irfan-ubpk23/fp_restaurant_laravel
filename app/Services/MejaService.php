@@ -21,44 +21,48 @@ class MejaService
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         return Meja::find($id);
     }
 
 
-    public function store($batas_orang) : Meja
+    public function store($params) : Meja
     {
-        $params = ["batas_orang" => $batas_orang];
-        
         $validator = Validator::make($params, [
+            "nama_meja" => "required",
             'batas_orang' => 'required'
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Batas Orang harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $meja = Meja::create($params);
         return $meja;
     }
 
-    public function update($id, $batas_orang) : Meja
+    public function update($id, $params) : Meja
     {
-        $params = ["id" => $id, "batas_orang" => $batas_orang];
-        
+        $params["id"] = $id;
         $validator = Validator::make($params, [
             "id" => "required",
-            'batas_orang' => 'required'
+            "nama_meja" => "",
+            'batas_orang' => ''
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id dan Batas Orang harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $meja = Meja::find($id);
-        $meja->batas_orang = $params['batas_orang'];
+        if (isset($params["nama_meja"])){
+            $meja->nama_meja = $params["nama_meja"];
+        }
+        if (isset($params["batas_orang"])){
+            $meja->batas_orang = $params['batas_orang'];
+        }
         $meja->save();
 
         return $meja;
@@ -71,7 +75,7 @@ class MejaService
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Id harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
         $meja = Meja::find($id);

@@ -23,14 +23,27 @@ class AuthService
         ]);
 
         if ($validator->fails()){
-            throw new \Exception("Email dan Password harus terisi!");
+            throw new \Exception(implode("\n", $validator->errors()->all()));
         }
         
         if (Auth::attempt($params) == false){
             throw new \Exception("Password atau Email Salah!");
         }
-
+        
         return Auth::user();
 
+    }
+
+    public function check_user($username, $password)
+    {
+        $user = User::where('username', $username)->first();
+        if ($user){
+            if (Hash::check($password, $user->password)){
+                return "Password is Correct";
+            }
+            throw new \Exception("Password is not Correct");
+        }
+        throw new \Exception("User Doesnt Exist");
+        
     }
 }

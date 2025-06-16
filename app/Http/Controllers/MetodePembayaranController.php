@@ -16,7 +16,7 @@ class MetodePembayaranController extends Controller
 
     public function store(Request $request, MetodePembayaranService $metode_pembayaran_service){
         try{
-            $metode_pembayaran_service->store($request->nama_metode);
+            $metode_pembayaran_service->store($request->all());
 
             return redirect()->route("metode_pembayaran")->with('message', 'Metode Pembayaran telah dibuat');
         } catch (\Exception $e){
@@ -27,7 +27,7 @@ class MetodePembayaranController extends Controller
     public function update(Request $request, MetodePembayaranService $metode_pembayaran_service)
     {
         try{
-            $metode_pembayaran_service->update($request->id, $request->nama_metode);
+            $metode_pembayaran_service->update($request->id, $request->all());
 
             return redirect()->route("metode_pembayaran")->with('message', 'Metode Pembayaran telah diupdate');
         } catch (\Exception $e){
