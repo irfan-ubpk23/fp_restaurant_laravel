@@ -82,16 +82,30 @@
 
 @push('js')
 <script>
-    const askPasswordModal = new bootstrap.Modal("#askPasswordModal");
-    const askPasswordPassword = document.getElementById("askPasswordPassword");
+    let askPasswordModal;
+    let askPasswordPassword;
     let current_askPassword_func;
-
+    document.addEventListener("DOMContentLoaded", ()=>{
+        askPasswordModal = new bootstrap.Modal("#askPasswordModal");
+        askPasswordPassword = document.getElementById("askPasswordPassword");
     
-
-    function show_ask_password(func){
-        askPasswordModal.show();
-        current_askPassword_func = func;
-    }
+        if (document.getElementById("add-btn")){
+            const add_btn = document.getElementById("add-btn");
+            add_btn.onclick = () => show_ask_password(show_input_form);
+        }
+        
+        document.querySelectorAll("#delete-btn").forEach((e) => {
+            e.onclick = () => show_ask_password(() => show_delete_form(e));
+        });
+        document.querySelectorAll("#edit-btn").forEach((e) => {
+            e.onclick = () => show_ask_password(() => show_edit_form(e));
+        });
+    
+        function show_ask_password(func){
+            askPasswordModal.show();
+            current_askPassword_func = func;
+        }
+    });
 
     function ask_password(){
         fetch("{{ route('check_user') }}", {
@@ -106,6 +120,7 @@
             body: JSON.stringify({username : "{{ Auth::user()->username }}", password : askPasswordPassword.value})
         })
         .then((response)=>{
+            askPasswordPassword.value = "";
             askPasswordModal.hide();    
             
             if (response["status"] == 200){
@@ -117,5 +132,6 @@
             }
         })
     }
+    
 </script>
 @endpush

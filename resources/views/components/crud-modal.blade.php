@@ -58,16 +58,22 @@
 
 @push('js')
 <script>
+    let crud_target_url;
+    let showModal;
+    let inputModal;
+    let deleteModal;
+    let editModal;
+    let field_ids;
     document.addEventListener('DOMContentLoaded', () => {
         // initialize
-        const crud_target_url = "{{ $targetUrl }}";
-        const showModal = new bootstrap.Modal("#showModal");
-        const inputModal = new bootstrap.Modal("#inputModal");
-        const deleteModal = new bootstrap.Modal("#deleteModal");
-        const editModal = new bootstrap.Modal("#editModal");
+        crud_target_url = "{{ $targetUrl }}";
+        showModal = new bootstrap.Modal("#showModal");
+        inputModal = new bootstrap.Modal("#inputModal");
+        deleteModal = new bootstrap.Modal("#deleteModal");
+        editModal = new bootstrap.Modal("#editModal");
 
         // initialize fields
-        let field_ids = [];
+        field_ids = [];
         const fields = Array.from(document.getElementById("crudModalFields").children);
         const allowed_fields = ["INPUT", "SELECT"];
         
@@ -104,54 +110,59 @@
 
         // initialize events
         if (document.getElementById("add-btn")){
-            document.getElementById("add-btn").addEventListener("click", show_input_form);
+            document.getElementById("add-btn").onclick = show_input_form;
+            // document.getElementById("add-btn").addEventListener("click", show_input_form);
         }
         
         document.querySelectorAll("#show-btn").forEach((e) => {
-            e.addEventListener("click", () => show_modal(e));
+            e.onclick = () => show_modal;
+            // e.addEventListener("click", () => show_modal(e));
         });
         document.querySelectorAll("#delete-btn").forEach((e) => {
-            e.addEventListener("click", () => show_delete_form(e));
+            e.onclick = () => show_delete_form(e);
+            // e.addEventListener("click", () => show_delete_form(e));
         });
         document.querySelectorAll("#edit-btn").forEach((e) => {
-            e.addEventListener("click", () => show_edit_form(e));
+            e.onclick = () => show_edit_form(e);
+            // e.addEventListener("click", () => show_edit_form(e));
         });
-
-        function show_modal(button){
-            showModal.show();
-
-            let datas = JSON.parse(button.getAttribute("data-datas"));
-            
-            field_ids.forEach((field_id) => {
-                let data = datas[field_id];
-                
-                document.getElementById(field_id).innerText = datas[field_id];
-            })
-        }
-        
-        function show_input_form(){
-            inputModal.show();
-        }
-        
-        function show_delete_form(button){
-            deleteModal.show();
-            // change form's action
-            document.getElementById("deleteModalForm").action = crud_target_url + button.getAttribute('data-id');
-        }
-        
-        function show_edit_form(button){
-            editModal.show();
-            // change form's action
-            document.getElementById("editModalForm").action = crud_target_url + button.getAttribute('data-id');
-            // parse json object data from table
-            let datas = JSON.parse(button.getAttribute("data-datas"));
-            
-            field_ids.forEach((field_id) => {
-                if (datas[field_id]){
-                    document.getElementById('edit' + field_id).value = datas[field_id];
-                }
-            });
-        }
     });
+    
+    function show_modal(button){
+        showModal.show();
+
+        let datas = JSON.parse(button.getAttribute("data-datas"));
+        
+        field_ids.forEach((field_id) => {
+            let data = datas[field_id];
+            
+            document.getElementById(field_id).innerText = datas[field_id];
+        })
+    }
+    
+    function show_input_form(){
+        inputModal.show();
+    }
+    
+    function show_delete_form(button){
+        deleteModal.show();
+        // change form's action
+        document.getElementById("deleteModalForm").action = crud_target_url + button.getAttribute('data-id');
+    }
+    
+    function show_edit_form(button){
+        editModal.show();
+        // change form's action
+        document.getElementById("editModalForm").action = crud_target_url + button.getAttribute('data-id');
+        // parse json object data from table
+        let datas = JSON.parse(button.getAttribute("data-datas"));
+        
+        field_ids.forEach((field_id) => {
+            if (datas[field_id]){
+                document.getElementById('edit' + field_id).value = datas[field_id];
+            }
+        });
+    }
+    
 </script>
 @endpush
