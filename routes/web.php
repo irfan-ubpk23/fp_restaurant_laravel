@@ -7,8 +7,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MejaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReservasiController;
-use App\Http\Controllers\MetodePembayaranController;
-use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\TransaksiController;
 
 use App\Http\Middleware\UserIsAdmin;
 use App\Http\Middleware\UserIsDapur;
@@ -60,14 +59,7 @@ Route::middleware(UserIsAdmin::class)->group(function() {
         Route::get('/reservasi', 'index')->name('reservasi');
     });
 
-    Route::controller(MetodePembayaranController::class)->group(function(){
-        Route::get("/metode_pembayaran", 'index')->name("metode_pembayaran");
-        Route::post("/metode_pembayaran", 'store')->name("metode_pembayaran.store");
-        Route::put("/metode_pembayaran/{id}", "update")->name("metode_pembayaran.update");
-        Route::delete("/metode_pembayaran/{id}", "destroy")->name("metode_pembayaran.destroy");
-    });
-
-    Route::controller(PembayaranController::class)->group(function(){
-        Route::get('/pembayaran', 'index')->name('pembayaran');
+    Route::controller(TransaksiController::class)->group(function(){
+        Route::get('/transaksi', 'index')->name('transaksi');
     });
 });

@@ -12,7 +12,8 @@ class Datatable extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public string $datatableId="datatable"
+        public string $datatableId="datatable",
+        public string $filterRowPlacement="datatable-filter-row"
     )
     {
         //

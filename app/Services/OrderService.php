@@ -33,8 +33,9 @@ class OrderService
     {   
         $validator = Validator::make($params, [
             "user_id" => "required",
-            "nomor_antrian" => "required",
+            // "nomor_antrian" => "required",
             "status_order" => "required",
+            "jenis_order" => "required",
             "keterangan" => "required"
         ]);
 
@@ -42,6 +43,12 @@ class OrderService
             throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
+        $last_order = Order::whereDay("created_at", "=", date("d"))->last();
+        if ($last_order){
+            $params["nomor_antrian"] = string(int($last_order->nomor_antrian) + 1);
+        }else{
+            $params["nomor_antrian"] = '1';
+        }
         $meja = Order::create($params);
         return $meja;
     }
@@ -55,6 +62,7 @@ class OrderService
             "user_id" => "",
             "nomor_antrian" => "",
             "status_order" => "",
+            'jenis_order' => "",
             "keterangan" => ""
         ]);
 
@@ -71,6 +79,9 @@ class OrderService
         }
         if (isset($params["status_order"])){
             $order->status_order = $params['status_order'];
+        }
+        if (isset($params["jenis_order"])){
+            $order->jenis_order = $params['jenis_order'];
         }
         if (isset($params["keterangan"])){
             $order->keterangan = $params['keterangan'];
@@ -92,6 +103,11 @@ class OrderService
 
         $order = Order::find($id);
         $order->delete();
+    }
+
+    protected function calculate_nomor_antrian() : int
+    {
+        
     }
 
 }

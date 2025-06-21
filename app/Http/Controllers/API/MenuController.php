@@ -3,85 +3,63 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\MenuResource;
-use App\Models\Menu;
+use App\Services\MenuService;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Validator;
-
 
 class MenuController extends BaseController
 {
-    public function index(): JsonResponse
+    public function index(MenuService $menu_service): JsonResponse
     {
-        $menus = Menu::all();
-
-        return $this->sendResponse(MenuResource::collection($menus));
-    }
-
-    public function store(Request $request) : JsonResponse
-    {
-        $input = $request->all();
-
-        $validator = Validator::make($input, [
-            'id_kategori' => 'required',
-            'nama_menu' => 'required',
-            'harga_menu' => 'required',
-            'status_menu' => 'required',
-            'waktu_saji' => 'required'
-        ]);
-
-        if ($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
+        try{
+            return $this->sendResponse($menu_service->all());
+        }catch(\Exception $e){
+            return $this->sendError($e->getMessage());
         }
-
-        $menu = Menu::create($input);
-
-        return $this->sendResponse(new MenuResource($menu));
     }
 
-    public function show($id): JsonResponse
+    public function store(Request $request, MenuService $menu_service) : JsonResponse
     {
-        $menu = Menu::find($id);
+        try{
+            $menu = $menu_service->store($request->all());
 
-        if (is_null($menu)){
-            return $this->sendError('Menu not Found.');
+            return $this->sendResponse($menu, "Menu berhasil dibuat");
+        }catch(\Exception $e){
+            return $this->sendError($e->getMessage());
         }
-
-        return $this->sendResponse(new MenuResource($menu));
     }
 
-    public function update(Request $request, Menu $menu): JsonResponse
+    public function show(Request $request, MenuService $menu_service): JsonResponse
     {
-        $input = $request->all();
+        try{
+            $menu = $menu_service->show($request->id);
 
-        $validator = Validator::make($input, [
-            'id_kategori' => 'required',
-            'nama_menu' => 'required',
-            'harga_menu' => 'required',
-            'status_menu' => 'required',
-            'waktu_saji' => 'required'
-        ]);
-
-        if ($validator->fails()){
-            $this->sendError('Menu not found.');
+            return $this->sendResponse($menu, "Menu berhasil dibuat");
+        }catch(\Exception $e){
+            return $this->sendError($e->getMessage());
         }
-
-        $menu->id_kategori = $input['id_kategori'];
-        $menu->nama_menu = $input['nama_menu'];
-        $menu->harga_menu = $input['harga_menu'];
-        $menu->status_menu = $input['status_menu'];
-        $menu->waktu_saji = $input['waktu_saji'];
-        $menu->save();
-
-        return $this->sendResponse(new MenuResource($menu));
     }
 
-    public function destroy(Menu $menu)
+    public function update(Request $request, MenuService $menu_service): JsonResponse
     {
-        $menu->delete();
+        try{
+            $menu = $menu_service->update($request->id, $request->all());
 
-        return $this->sendResponse([]);
+            return $this->sendResponse($menu, "Menu berhasil diupdate");
+        }catch(\Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
+
+    public function destroy(Request $request, MenuService $menu_service)
+    {
+        try{
+            $menu = $menu_service->destroy($request->id);
+
+            return $this->sendResponse($menu, "Menu berhasil dihapus");
+        }catch(\Exception $e){
+            return $this->sendError($e->getMessage());
+        }
     }
 }

@@ -19,6 +19,9 @@ class OrderDetailResource extends JsonResource
             "order_id" => $this->order_id,
             "menu_id" => $this->menu_id,
             "jumlah" => $this->jumlah,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+
             "menu" => new MenuResource($this->menu)
         ];
     }

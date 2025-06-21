@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Services\AuthService;
+use App\Services\UserService;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,15 @@ use Illuminate\Http\Request;
 
 class AuthController extends BaseController
 {
+    public function register(Request $request, UserService $user_service){
+        try{
+            $user_service->store($request->all());
+            return $this->sendResponse("Register Berhasil", "Login Successful.");
+        } catch (\Exception $e){
+            return $this->sendError("Register Gagal", $e->getMessage());
+        }
+    }
+
     public function login(Request $request, AuthService $auth_service)
     {
         try{

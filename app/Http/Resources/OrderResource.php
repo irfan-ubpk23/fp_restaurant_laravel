@@ -19,7 +19,11 @@ class OrderResource extends JsonResource
             "user_id" => $this->user_id,
             "nomor_antrian" => $this->nomor_antrian,
             "status_order" => $this->status_order,
+            "jenis_order" => $this->jenis_order,
             "keterangan" => $this->keterangan,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+
             "user" => new UserResource($this->user),
             "details" => OrderDetailResource::collection($this->details)
         ];

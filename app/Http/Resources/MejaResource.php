@@ -17,7 +17,10 @@ class MejaResource extends JsonResource
         return [
             'id' => $this->id,
             "nama_meja" => $this->nama_meja,
-            'batas_orang' => $this->batas_orang
+            'batas_orang' => $this->batas_orang,
+            'status_meja' => $this->status_meja,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at
         ];
     }
 }

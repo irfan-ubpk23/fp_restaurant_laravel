@@ -7,8 +7,6 @@ use App\Services\Kategori;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Validator;
-
 
 class KategoriController extends BaseController
 {
@@ -46,7 +44,7 @@ class KategoriController extends BaseController
     public function update(Request $request, KategoriService $kategori_service): JsonResponse
     {
         try{
-            $kategori = $kategori_service->show($request->id, $request->nama_kategori);
+            $kategori = $kategori_service->show($request->id, $request->all());
 
             return $this->sendResponse($kategori, "Kategori berhasil diupdate");
         }catch(\Exception $e){

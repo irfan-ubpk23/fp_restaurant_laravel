@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("nama_meja");
             $table->integer('batas_orang');
+            $table->enum("status_meja", ['tersedia', 'terisi']);
             $table->timestamps();
         });
     }

@@ -2,19 +2,20 @@
 
 namespace App\Services;
 
-use App\Models\Meja;
+use App\Models\OrderDetail;
 
 use Illuminate\Support\Facades\Validator;
 
-class MejaService
+class OrderDetailService
 {
 
     public function all()
     {
-        return Meja::all();
+        $order_details = OrderDetail::all();
+        return $order_details;
     }
 
-    public function show($id) : Meja
+    public function show($id) : OrderDetail
     {
         $validator = Validator::make(["id"=>$id], [
             "id" => "required"
@@ -24,53 +25,52 @@ class MejaService
             throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
-        return Meja::find($id);
+        return OrderDetail::find($id);
     }
 
-
-    public function store($params) : Meja
+    public function store($params) : OrderDetail
     {
         $validator = Validator::make($params, [
-            "nama_meja" => "required",
-            'batas_orang' => 'required',
-            "status_meja" => "required"
+            'order_id' => 'required',
+            'menu_id' => 'required',
+            'jumlah' => 'required'
         ]);
 
         if ($validator->fails()){
             throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
-        $meja = Meja::create($params);
-        return $meja;
+        $order_detail = OrderDetail::create($params);
+        return $order_detail;
     }
 
-    public function update($id, $params) : Meja
+    public function update($id, $params) : OrderDetail
     {
         $params["id"] = $id;
         $validator = Validator::make($params, [
             "id" => "required",
-            "nama_meja" => "",
-            'batas_orang' => '',
-            'status_meja' => ''
+            'order_id' => '',
+            'menu_id' => '',
+            'jumlah' => ''
         ]);
 
         if ($validator->fails()){
             throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
-        $meja = Meja::find($id);
-        if (isset($params["nama_meja"])){
-            $meja->nama_meja = $params["nama_meja"];
+        $order_detail = OrderDetail::find($id);
+        if (isset($params["order_id"])){
+            $order_detail->order_id = $params["order_id"];
         }
-        if (isset($params["batas_orang"])){
-            $meja->batas_orang = $params['batas_orang'];
+        if (isset($params["menu_id"])){
+            $order_detail->menu_id = $params["menu_id"];
         }
-        if (isset($params["status_meja"])){
-            $meja->status_meja = $params["status_meja"];
+        if (isset($params["jumlah"])){
+            $order_detail->jumlah = $params["jumlah"];
         }
-        $meja->save();
+        $order_detail->save();
 
-        return $meja;
+        return $order_detail;
     }
 
     public function destroy($id)
@@ -83,8 +83,7 @@ class MejaService
             throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
-        $meja = Meja::find($id);
-        $meja->delete();
+        $order_detail = OrderDetail::find($id);
+        $order_detail->delete();
     }
-
 }

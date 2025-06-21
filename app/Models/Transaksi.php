@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Pembayaran extends Model
+class Transaksi extends Model
 {
-    protected $table = 'pembayaran';
+    protected $table = 'transaksi';
     protected $fillable = [
         'order_id',
-        'metode_pembayaran_id',
+        'metode_pembayaran',
         'total_harga',
         'kode_transaksi',
         'status_pembayaran',
@@ -22,8 +22,4 @@ class Pembayaran extends Model
         return $this::HasOne(Order::class, "id", "order_id");
     }
 
-    public function metode_pembayaran() : HasOne
-    {
-        return $this::HasOne(MetodePembayaran::class, 'id', 'metode_pembayaran_id');
-    }
 }

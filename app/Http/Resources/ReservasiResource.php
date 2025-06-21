@@ -18,6 +18,7 @@ class ReservasiResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'meja_id' => $this->meja_id,
+            'transaksi_id' => $this->transaksi_id,
             'tanggal_dan_jam' => $this->tanggal_dan_jam,
             'status_reservasi' => $this->status_reservasi,
             'created_at' => $this->created_at,

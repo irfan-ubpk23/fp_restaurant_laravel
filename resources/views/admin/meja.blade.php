@@ -5,6 +5,10 @@
         <x-slot:fields>
             <input type="text" name="nama_meja" id="nama_meja" placeholder="Nama Meja" class="form-control">
             <input type="number" name="batas_orang" id="batas_orang" placeholder="Batas Orang" class="form-control">
+            <select name="status_meja" id="status_meja" placeholder="Status Meja" class="form-select">
+                <option value="tersedia">Tersedia</option>
+                <option value="terisi">Terisi</option>
+            </select>
         </x-slot:fields>
     </x-crud-modal>
 
@@ -18,42 +22,55 @@
 
     <!-- Content Row -->
     <div class="row">
-        <div class="col">
-            <div class="card shadow mb-4">
-                <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Meja Table</h6>
-                </div>
-                <div class="card-body" >
-                    <x-datatable datatable-id="datatable">
-                        <x-slot:head>
+        <div class="card shadow mb-4">
+            <div
+                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Filter</h6>
+            </div>
+            <div class="card-body" id="datatable-filter-row">
+                
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card shadow mb-4">
+            <div
+                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Meja Table</h6>
+            </div>
+            <div class="card-body" >
+                <x-datatable datatable-id="datatable">
+                    <x-slot:head>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nama Meja</th>
+                            <th>Batas Orang</th>
+                            <th>Status Meja</th>
+                            <th>Aksi</th>
+                            <th>Created At</th>
+                        </tr>
+                    </x-slot:head>
+                    <x-slot:body>
+                        @foreach ($mejas as $meja)
                             <tr>
-                                <th>Id</th>
-                                <th>Nama Meja</th>
-                                <th>Batas Orang</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </x-slot:head>
-                        <x-slot:body>
-                            @foreach ($mejas as $meja)
-                                <tr>
-                                    <td>{{ $meja->id }}</td>
-                                    <td>{{ $meja->nama_meja }}</td>
-                                    <td>{{ $meja->batas_orang }}</td>
-                                    <td>
-                                        <button type="button" id="delete-btn" data-id="{{ $meja->id }}" class="btn btn-danger btn-circle">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
+                                <td>{{ $meja->id }}</td>
+                                <td>{{ $meja->nama_meja }}</td>
+                                <td>{{ $meja->batas_orang }}</td>
+                                <td>{{ $meja->status_meja }}</td>
+                                <td>
+                                    <button type="button" id="delete-btn" data-id="{{ $meja->id }}" class="btn btn-danger btn-circle">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
 
-                                        <button type="button" id="edit-btn" data-id="{{ $meja->id }}" data-datas="{{ $meja }}" class="btn btn-secondary btn-circle">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </x-slot:body>
-                    </x-datatable>
-                </div>
+                                    <button type="button" id="edit-btn" data-id="{{ $meja->id }}" data-datas="{{ $meja }}" class="btn btn-secondary btn-circle">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                </td>
+                                <td>{{ $meja->created_at }} </td>
+                            </tr>
+                        @endforeach
+                    </x-slot:body>
+                </x-datatable>
             </div>
         </div>
     </div>

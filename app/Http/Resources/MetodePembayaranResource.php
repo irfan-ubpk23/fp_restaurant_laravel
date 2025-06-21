@@ -16,7 +16,9 @@ class MetodePembayaranResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "nama_metode" => $this->nama_metode
+            "nama_metode" => $this->nama_metode,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at
         ];
     }
 }

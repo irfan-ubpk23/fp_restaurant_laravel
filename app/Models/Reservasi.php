@@ -11,6 +11,7 @@ class Reservasi extends Model
     protected $fillable = [
         'user_id',
         'meja_id',
+        'transaksi_id',
         'tanggal_dan_jam',
         'status_reservasi'
     ];
@@ -23,5 +24,10 @@ class Reservasi extends Model
     public function meja() : HasOne
     {
         return $this::HasOne(Meja::class, 'id', 'meja_id');
+    }
+
+    public function transaksi() : HasOne
+    {
+        return $this::HasOne(Transaksi::class, 'id', 'transaksi_id');
     }
 }

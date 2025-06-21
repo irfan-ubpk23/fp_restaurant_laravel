@@ -142,13 +142,13 @@
         }
 
         function save_status(){            
-            fetch("/api/order/" + current_status_button.getAttribute("data-id"), {
+            fetch("/api/orders/" + current_status_button.getAttribute("data-id"), {
                 headers: {
                     "Content-type" : "application/json",
                     "Accept" : "application/json, text-plain, */*",
                     "X-CSRF-Token" : "{{ csrf_token() }}",
                 },
-                method: "post",
+                method: "put",
                 credentials:"same-origin",
                 body: JSON.stringify({status_order : current_status_button.value})
             })

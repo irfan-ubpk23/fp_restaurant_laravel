@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('metode_pembayaran', function (Blueprint $table) {
+        Schema::create('activity_log', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_metode');
+            $table->unsignedBigInteger('user_id');
+            $table->text("keterangan");
+            $table->enum("jenis_log", ['activity', 'notification']);
             $table->timestamps();
+
+            $table->foreign("user_id")->references('id')->on("users");
         });
     }
 
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('metode_pembayaran');
+        Schema::dropIfExists('activity_log');
     }
 };

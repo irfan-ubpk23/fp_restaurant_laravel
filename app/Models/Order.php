@@ -13,6 +13,7 @@ class Order extends Model
         'user_id',
         'nomor_antrian',
         'status_order',
+        'jenis_order',
         'keterangan'
     ];
 

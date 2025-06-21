@@ -84,24 +84,15 @@
                     Transaksi
                 </div>
 
-                <li class="nav-item
-                @if (Request::path() == "metode_pembayaran")
-                    active
-                @endif
-                ">
-                    <a class="nav-link" href="/metode_pembayaran">
-                        <i class="fas fa-fw fa-table"></i>
-                        <span>Metode Pembayaran</span></a>
-                </li>
                 
                 <li class="nav-item
-                @if (Request::path() == "pembayaran")
+                @if (Request::path() == "transaksi")
                     active
                 @endif
                 ">
-                    <a class="nav-link" href="/pembayaran">
+                    <a class="nav-link" href="/transaksi">
                         <i class="fas fa-fw fa-table"></i>
-                        <span>Pembayaran</span></a>
+                        <span>Transaksi</span></a>
                 </li>
 
                 <li class="nav-item

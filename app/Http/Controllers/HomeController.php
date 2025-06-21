@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaksi;
+use App\Models\Reservasi;
+
 use App\Services\OrderService;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -20,7 +24,17 @@ class HomeController extends Controller
     public function dashboard(OrderService $order_service){
         $role = Auth::user()->role;
         if ($role === "admin"){
-            return view("admin.index");
+            $orders_count = Transaksi::count();
+            $reservasis_count = Reservasi::count();
+            $total_monthly_orders = Transaksi::whereMonth('created_at', ">=", date('m'))->sum("total_harga");
+            $total_annually_orders = Transaksi::whereYear('created_at', ">=", date('Y'))->sum("total_harga");
+
+            return view("admin.index", [
+                "orders_count" => $orders_count,
+                "reservasis_count" => $reservasis_count,
+                "total_monthly_orders" => $total_monthly_orders,
+                "total_annually_orders" => $total_annually_orders
+            ]);
         }else if($role === "dapur"){
             return view("dapur.index", ["orders"=>$order_service->all()]);
         }else{

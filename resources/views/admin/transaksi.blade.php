@@ -25,6 +25,9 @@
                     <label for="status_order">Status Order</label>
                     <p id="status_order" class="order-field"></p>
                     
+                    <label for="jenis_order">Jenis Order</label>
+                    <p id="jenis_order" class="order-field"></p>
+
                     <label for="keterangan">Keterangan</label>
                     <p id="keterangan" class="order-field"></p>
 
@@ -37,49 +40,58 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Pembayaran</h1>
+        <h1 class="h3 mb-0 text-gray-800">Transaksi</h1>
     </div>
 
     <!-- Content Row -->
     <div class="row">
-        <div class="col">
-            <div class="card shadow mb-4">
-                <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Pembayaran Table</h6>
-                </div>
-                <div class="card-body" >
-                    <x-datatable datatable-id="datatable">
-                        <x-slot:head>
+        <div class="card shadow mb-4">
+            <div
+                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Filter</h6>
+            </div>
+            <div class="card-body" id="datatable-filter-row">
+                
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card shadow mb-4">
+            <div
+                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Transaksi Table</h6>
+            </div>
+            <div class="card-body" >
+                <x-datatable datatable-id="datatable">
+                    <x-slot:head>
+                        <tr>
+                            <th>Id</th>
+                            <th>Order</th>
+                            <th>Metode Pembayaran</th>
+                            <th>Total Harga</th>
+                            <th>Kode Transaksi</th>
+                            <th>Status Pembayaran</th>
+                            <th>Created At</th>
+                        </tr>
+                    </x-slot:head>
+                    <x-slot:body>
+                        @foreach ($transaksis as $transaksi)
                             <tr>
-                                <th>Id</th>
-                                <th>Order</th>
-                                <th>Metode Pembayaran</th>
-                                <th>Total Harga</th>
-                                <th>Kode Transaksi</th>
-                                <th>Status Pembayaran</th>
-                                <th>Bukti Pembayaran</th>
+                                <td>{{ $transaksi->id }}</td>
+                                <td>
+                                    <button class="btn btn-circle btn-primary" id="show-order-btn" data-datas="{{ $transaksi->toJson() }}">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </td>
+                                <td>{{ $transaksi->metode_pembayaran }}</td>
+                                <td>{{ $transaksi->total_harga }}</td>
+                                <td>{{ $transaksi->kode_transaksi }}</td>
+                                <td>{{ $transaksi->status_pembayaran }}</td>
+                                <td>{{ $transaksi->created_at }} </td>
                             </tr>
-                        </x-slot:head>
-                        <x-slot:body>
-                            @foreach ($pembayarans as $pembayaran)
-                                <tr>
-                                    <td>{{ $pembayaran->id }}</td>
-                                    <td>
-                                        <button class="btn btn-circle btn-primary" id="show-order-btn" data-datas="{{ $pembayaran->toJson() }}">
-                                            <i class="fa-solid fa-eye"></i>
-                                        </button>
-                                    </td>
-                                    <td>{{ $pembayaran->metode_pembayaran->nama_metode }}</td>
-                                    <td>{{ $pembayaran->total_harga }}</td>
-                                    <td>{{ $pembayaran->kode_transaksi }}</td>
-                                    <td>{{ $pembayaran->status_pembayaran }}</td>
-                                    <td>{{ $pembayaran->bukti_pembayaran }}</td>
-                                </tr>
-                            @endforeach
-                        </x-slot:body>
-                    </x-datatable>
-                </div>
+                        @endforeach
+                    </x-slot:body>
+                </x-datatable>
             </div>
         </div>
     </div>
@@ -127,10 +139,8 @@
                             case "nama_menu":
                                 child.innerText = ":" + row_data["menu"]["nama_menu"];
                                 break;
-                            case "jumlah":
-                                child.innerText = ":" + row_data["jumlah"];
-                                break;
                             default:
+                                child.innerText = ":" + row_data[child.id];
                                 break;
                         }
                         child.id += index;
