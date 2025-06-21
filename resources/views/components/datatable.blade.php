@@ -56,7 +56,7 @@
 
         filterRow.remove();
         filterRowPlacement.appendChild(filterRow);
-        filterRow.style = "display:block";
+        filterRow.style = "";
 
         datatable.search.fixed('range', function (searchStr, data, index) {
             const min = new Date(dibuatDari.value);

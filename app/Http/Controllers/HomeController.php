@@ -25,15 +25,15 @@ class HomeController extends Controller
         $role = Auth::user()->role;
         if ($role === "admin"){
             $orders_count = Transaksi::count();
-            $reservasis_count = Reservasi::count();
-            $total_monthly_orders = Transaksi::whereMonth('created_at', ">=", date('m'))->sum("total_harga");
-            $total_annually_orders = Transaksi::whereYear('created_at', ">=", date('Y'))->sum("total_harga");
+            $total_all_transaksis = Transaksi::sum('total_harga');
+            $total_monthly_transaksis = Transaksi::whereMonth('created_at', ">=", date('m'))->sum("total_harga");
+            $total_annually_transaksis = Transaksi::whereYear('created_at', ">=", date('Y'))->sum("total_harga");
 
             return view("admin.index", [
                 "orders_count" => $orders_count,
-                "reservasis_count" => $reservasis_count,
-                "total_monthly_orders" => $total_monthly_orders,
-                "total_annually_orders" => $total_annually_orders
+                "total_all_transaksis" => $total_all_transaksis,
+                "total_monthly_transaksis" => $total_monthly_transaksis,
+                "total_annually_transaksis" => $total_annually_transaksis
             ]);
         }else if($role === "dapur"){
             return view("dapur.index", ["orders"=>$order_service->all()]);
