@@ -62,4 +62,15 @@ class TransaksiController extends BaseController
             return $this->sendError($e->getMessage());
         }
     }
+
+    public function where_user_id(Request $request, TransaksiService $transaksi_service)
+    {
+        try{
+            $transaksis = $transaksi_service->where_user_id($request->id);
+
+            return $this->sendResponse($transaksis);
+        }catch(\Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
 }

@@ -31,11 +31,10 @@ class TransaksiService
     public function store($params) : Transaksi
     {
         $validator = Validator::make($params, [
+            'user_id' => "required",
             "order_id" => "required",
             "metode_pembayaran" => "required",
             "total_harga" => "required",
-            // "kode_transaksi" => "required",
-            // "status_pembayaran" => "required",
         ]);
 
         if ($validator->fails()){
@@ -43,9 +42,6 @@ class TransaksiService
         }
 
         $params["kode_transaksi"] = date('YmdHisu');
-        if (! isset($params["status_pembayaran"])){
-            $params["status_pembayaran"] = "belum";
-        }
         $transaksi = Transaksi::create($params);
         return $transaksi;
     }
@@ -56,6 +52,7 @@ class TransaksiService
         
         $validator = Validator::make($params, [
             "id" => "required",
+            'user_id' => '',
             "order_id" => "",
             "metode_pembayaran" => "",
             "total_harga" => "",
@@ -68,19 +65,22 @@ class TransaksiService
         }
 
         $transaksi = Transaksi::find($id);
-        if ($params["order_id"]){
+        if (isset($params["user_id"])){
+            $transaksi->user_id = $params["user_id"];
+        }
+        if (isset($params["order_id"])){
             $transaksi->order_id = $params['order_id'];
         }
-        if ($params["metode_pembayaran"]){
+        if (isset($params["metode_pembayaran"])){
             $transaksi->metode_pembayaran = $params['metode_pembayaran'];
         }
-        if ($params["total_harga"]){
+        if (isset($params["total_harga"])){
             $transaksi->total_harga = $params['total_harga'];
         }
-        if ($params["kode_transaksi"]){
+        if (isset($params["kode_transaksi"])){
             $transaksi->kode_transaksi = $params['kode_transaksi'];
         }
-        if ($params["status_pembayaran"]){
+        if (isset($params["status_pembayaran"])){
             $transaksi->status_pembayaran = $params['status_pembayaran'];
         }
         $transaksi->save();
@@ -100,5 +100,19 @@ class TransaksiService
 
         $transaksi = Transaksi::find($id);
         $transaksi->delete();
+    }
+
+    public function where_user_id($user_id)
+    {
+        $validator = Validator::make(["user_id"=>$user_id], [
+            "user_id" => "required"
+        ]);
+
+        if ($validator->fails()){
+            throw new \Exception(implode("\n", $validator->errors()->all()));
+        }
+
+        $transaksis = Transaksi::where('user_id', $user_id)->get();
+        return TransaksiResource::collection($transaksis);
     }
 }
