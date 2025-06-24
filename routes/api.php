@@ -70,6 +70,8 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post("/transaksis", 'store');
         Route::put('/transaksis/{id}', 'update');
         Route::delete("/transaksis/{id}", 'destroy');
+
+        Route::get("/transaksis/user/{id}", 'where_user_id');
     });
 });
 
