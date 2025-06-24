@@ -35,13 +35,16 @@ class ReservasiService
             "meja_id" => "required",
             'order_id' => 'required',
             "tanggal_dan_jam" => "required",
-            "status_reservasi" => "required"
+            // "status_reservasi" => "required"
         ]);
 
         if ($validator->fails()){
             throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
+        if (! isset($params["status_reservasi"])){
+            $params["status_reservasi"] = 'menunggu';
+        }
         $reservasi = Reservasi::create($params);
         return $reservasi;
     }

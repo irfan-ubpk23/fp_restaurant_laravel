@@ -34,14 +34,18 @@ class TransaksiService
             "order_id" => "required",
             "metode_pembayaran" => "required",
             "total_harga" => "required",
-            "kode_transaksi" => "required",
-            "status_pembayaran" => "required",
+            // "kode_transaksi" => "required",
+            // "status_pembayaran" => "required",
         ]);
 
         if ($validator->fails()){
             throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
+        $params["kode_transaksi"] = date('YmdHisu');
+        if (! isset($params["status_pembayaran"])){
+            $params["status_pembayaran"] = "belum";
+        }
         $transaksi = Transaksi::create($params);
         return $transaksi;
     }
