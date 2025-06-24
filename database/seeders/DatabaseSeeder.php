@@ -78,21 +78,22 @@ class DatabaseSeeder extends Seeder
             'menu_id' => '1',
             'jumlah' => '5'
         ]);
-        
-        DB::table('reservasi')->insert([
-            'user_id' => '1',
-            'meja_id' => '1',
-            'order_id' => '1',
-            'tanggal_dan_jam' => '2025-06-1 15:00:00',
-            'status_reservasi' => 'menunggu',
-        ]);
 
         DB::table('transaksi')->insert([
+            'user_id' => '1',
             'order_id' => '1',
             'metode_pembayaran' => 'qris',
             'total_harga' => '2000',
             'kode_transaksi' => '12516',
             'status_pembayaran' => 'belum',
+        ]);
+                
+        DB::table('reservasi')->insert([
+            'user_id' => '1',
+            'meja_id' => '1',
+            'transaksi_id' => '1',
+            'tanggal_dan_jam' => '2025-06-1 15:00:00',
+            'status_reservasi' => 'menunggu',
         ]);
     }
 }
