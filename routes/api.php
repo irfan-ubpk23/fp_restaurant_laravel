@@ -14,14 +14,27 @@ use App\Http\Controllers\API\TransaksiController;
 Route::controller(AuthController::class)->group(function(){
     Route::post('/login', 'login')->name('login');
     Route::post('/check_user', 'check_user')->name("check_user");
+    Route::post("/register", 'register')->name("register");
 });
 
 Route::middleware('auth:sanctum')->group(function(){
+    Route::post("/logout", [AuthController::class, 'logout']);
+
     Route::controller(KategoriController::class)->group(function(){
         Route::get("/kategoris", 'index');
         Route::post("/kategoris", 'store');
         Route::put('/kategoris/{id}', 'update');
         Route::delete("/kategoris/{id}", 'destroy');
+    });
+
+    Route::controller(MenuController::class)->group(function(){
+        Route::get("/menus", 'index');
+        Route::get("/menus/{id}", 'show');
+        Route::post("/menus", "store");
+        Route::put("/menus/{id}", 'update');
+        Route::delete("/menus/{id}", 'destroy');
+
+        Route::get("/menus/terlaris", "terlaris");
     });
 
     Route::controller(MejaController::class)->group(function(){
