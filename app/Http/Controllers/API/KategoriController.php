@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Services\Kategori;
+use App\Services\KategoriService;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
