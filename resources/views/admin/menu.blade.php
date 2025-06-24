@@ -79,7 +79,7 @@
                                 <td>{{ $menu->kategori->nama_kategori }}</td>
                                 <td>{{ $menu->nama_menu }}</td>
                                 <td>
-                                    <button type="button" id="show-img-btn" class="btn btn-circle btn-primary" data-img-url="{{ asset($menu->gambar_menu) }}">
+                                    <button type="button" id="show-img-btn" class="btn btn-circle btn-primary" data-img-url="{{ $menu->gambar_menu }}">
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
                                 </td>
