@@ -10,6 +10,7 @@ class Reservasi extends Model
     protected $table = 'reservasi';
     protected $fillable = [
         'user_id',
+        'order_id',
         'meja_id',
         'transaksi_id',
         'tanggal_dan_jam',
