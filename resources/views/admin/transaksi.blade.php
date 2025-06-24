@@ -66,6 +66,7 @@
                     <x-slot:head>
                         <tr>
                             <th>Id</th>
+                            <th>User</th>
                             <th>Order</th>
                             <th>Metode Pembayaran</th>
                             <th>Total Harga</th>
@@ -78,6 +79,7 @@
                         @foreach ($transaksis as $transaksi)
                             <tr>
                                 <td>{{ $transaksi->id }}</td>
+                                <td>{{ $transaksi->user->username }} </td>
                                 <td>
                                     <button class="btn btn-circle btn-primary" id="show-order-btn" data-datas="{{ $transaksi->toJson() }}">
                                         <i class="fa-solid fa-eye"></i>
