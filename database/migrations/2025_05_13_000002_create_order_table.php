@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('nomor_antrian');
-            $table->enum('status_order', ['proses', 'sudah']);
+            $table->enum('status_order', ['proses', 'sudah'])->default('proses');
             $table->enum("jenis_order", ['dinein', 'reservasi', 'takeaway']);
             $table->text('keterangan');
             $table->timestamps();
