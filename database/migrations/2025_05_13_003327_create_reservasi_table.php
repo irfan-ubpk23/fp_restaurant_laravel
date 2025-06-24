@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('transaksi_id');
 
             $table->timestamp('tanggal_dan_jam', precision:0)->nullable();
-            $table->enum('status_reservasi', ['menunggu', 'sudah', 'tidak_hadir']);
+            $table->enum('status_reservasi', ['menunggu', 'sudah', 'tidak_hadir'])->default('menunggu');
 
             $table->timestamps();
 
