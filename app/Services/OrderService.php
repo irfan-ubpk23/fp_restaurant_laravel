@@ -34,20 +34,29 @@ class OrderService
         $validator = Validator::make($params, [
             "user_id" => "required",
             // "nomor_antrian" => "required",
-            "status_order" => "required",
+            // "status_order" => "required",
             "jenis_order" => "required",
-            "keterangan" => "required"
+            "keterangan" => ""
         ]);
 
         if ($validator->fails()){
             throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
-        $last_order = Order::whereDay("created_at", "=", date("d"))->last();
-        if ($last_order){
-            $params["nomor_antrian"] = string(int($last_order->nomor_antrian) + 1);
+        $last_order = Order::whereDay("created_at", "=", date("d"))
+            ->orderBy('nomor_antrian', 'desc')
+            ->get();
+        if (count($last_order) > 0){
+            $params["nomor_antrian"] = intval($last_order[0]->nomor_antrian) + 1;
         }else{
-            $params["nomor_antrian"] = '1';
+            $params["nomor_antrian"] = 1;
+        }
+
+        if (! isset($params["status_order"])){
+            $params["status_order"] = 'proses';
+        }
+        if (! isset($params["keterangan"])){
+            $params["keterangan"] = " ";
         }
         $meja = Order::create($params);
         return $meja;
