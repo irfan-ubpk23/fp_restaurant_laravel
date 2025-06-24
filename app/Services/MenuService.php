@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\Models\Menu;
+use App\Models\OrderDetail;
 use App\Http\Resources\MenuResource;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\URL;
 
 class MenuService
 {
@@ -43,9 +45,7 @@ class MenuService
             throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
-        $nama_gambar = time() . '.' . $params['gambar_menu']->extension();
-        $params['gambar_menu']->move(public_path("images"), $nama_gambar);
-        $params['gambar_menu'] = "images/" . $nama_gambar;
+        $params['gambar_menu'] = $this->uploadImageAndGetPath($params['gambar_menu']);
         $menu = Menu::create($params);
         return $menu;
     }
@@ -75,9 +75,7 @@ class MenuService
             $menu->harga_menu = $params['harga_menu'];
         }
         if (isset($params["gambar_menu"])){
-            $nama_gambar = time() . '.' . $params['gambar_menu']->extension();
-            $params['gambar_menu']->move(public_path("images"), $nama_gambar);
-            $menu->gambar_menu = "images/" . $nama_gambar;
+            $menu->gambar_menu = $this->uploadImageAndGetPath($params['gambar_menu']);;
         }
         if (isset($params["harga_menu"])){
             $menu->harga_menu = $params['harga_menu'];
@@ -105,6 +103,40 @@ class MenuService
 
         $menu = Menu::find($id);
         $menu->delete();
+    }
+
+    public function terlaris($params){
+        $validator = Validator::make($params, [
+            "range" => "required"
+        ]);
+
+        if ($validator->fails()){
+            throw new \Exception(implode("\n", $validator->errors()->all()));
+        }
+
+        $menus = Menu::all();
+        $menus_terlaris = [];
+
+        foreach ($menus as $menu){
+            $order_detail_query;
+            if ($params['range'] == 'bulan'){
+                $order_detail_query = OrderDetail::whereMonth('created_at', '=', date('m'));
+            }else{
+                $order_detail_query = OrderDetail::whereYear('created_at', '=', date('Y'));
+            }
+            array_push($menus_terlaris, [
+                $menu->id,
+                $menu->nama_menu,
+                $order_detail_query->where("menu_id", $menu->id)->sum("jumlah")
+            ]);
+        }
+        return $menus_terlaris;
+    }
+
+    public function uploadImageAndGetPath($imageFile){
+        $nama_gambar = time() . '.' . $imageFile->extension();
+        $imageFile->move(public_path("images"), $nama_gambar);
+        return URL::to("/images/" . $nama_gambar);
     }
 
 }
