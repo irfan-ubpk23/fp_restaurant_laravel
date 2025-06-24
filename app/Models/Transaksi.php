@@ -9,6 +9,7 @@ class Transaksi extends Model
 {
     protected $table = 'transaksi';
     protected $fillable = [
+        'user_id',
         'order_id',
         'metode_pembayaran',
         'total_harga',
@@ -17,9 +18,19 @@ class Transaksi extends Model
         'bukti_pembayaran'
     ];
 
+    public function user() : HasOne
+    {
+        return $this::HasOne(User::class, 'id', 'user_id');
+    }
+
     public function order() :HasOne
     {
         return $this::HasOne(Order::class, "id", "order_id");
+    }
+
+    public function reservasi() : HasOne
+    {
+        return $this::HasOne(Reservasi::class, 'transaksi_id', 'id');
     }
 
 }

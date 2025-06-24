@@ -13,15 +13,17 @@ return new class extends Migration
     {
         Schema::create('transaksi', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('order_id');
             
             $table->enum("metode_pembayaran", ['tunai', 'qris']);
             $table->integer('total_harga');
             $table->string('kode_transaksi');
-            $table->enum('status_pembayaran', ['belum', 'selesai']);
+            $table->enum('status_pembayaran', ['belum', 'selesai'])->default('belum');
 
             $table->timestamps();
 
+            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('order_id')->references('id')->on('order');
         });
     }
@@ -31,7 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembayaran');
         Schema::dropIfExists('transaksi');
     }
 };
