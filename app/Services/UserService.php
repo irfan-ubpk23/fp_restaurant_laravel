@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Http\Resources\UserResource;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -52,7 +53,7 @@ class UserService
         return $user;
     }
 
-    public function update($id, $params) : User
+    public function update($id, $params)
     {
         $params["id"] = $id;
         
@@ -68,7 +69,7 @@ class UserService
         if ($validator->fails()){
             throw new \Exception(implode("\n", $validator->errors()->all()));
         }
-
+        
         $user = User::find($id);
         if (isset($params["username"])){
             $user->username = $params['username'];
@@ -87,7 +88,7 @@ class UserService
         }
         $user->save();
 
-        return $user;
+        return new UserResource($user);
     }
 
     public function destroy($id)
