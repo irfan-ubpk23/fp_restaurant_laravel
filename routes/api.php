@@ -15,6 +15,7 @@ use App\Http\Controllers\API\TransaksiController;
 Route::controller(AuthController::class)->group(function(){
     Route::post('/login', 'login')->name('login');
     Route::post('/check_user', 'check_user')->name("check_user");
+    Route::post('/check_token', 'check_token');
     Route::post("/register", 'register')->name("register");
 });
 

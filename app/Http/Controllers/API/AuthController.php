@@ -45,6 +45,17 @@ class AuthController extends BaseController
         }
     }
 
+    public function check_token(Request $request){
+        try{
+            if ($request->user("sanctum")){
+                return $this->sendResponse("Token is valid.");
+            }
+            throw new \Exception('Token is not valid.');
+        }catch(\Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
+
     public function logout(Request $request){
         try{
             $request->user()->tokens()->delete();
