@@ -44,7 +44,7 @@ class KategoriController extends BaseController
     public function update(Request $request, KategoriService $kategori_service): JsonResponse
     {
         try{
-            $kategori = $kategori_service->show($request->id, $request->all());
+            $kategori = $kategori_service->update($request->id, $request->all());
 
             return $this->sendResponse($kategori, "Kategori berhasil diupdate");
         }catch(\Exception $e){
