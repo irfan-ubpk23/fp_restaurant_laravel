@@ -44,11 +44,6 @@ class UserService
         }
         
         $params["password"] = bcrypt($params["password"]);
-        // erase asap and change to sql handling
-        if (isset($params['role']) == false)
-        {
-            $params['role'] = 'pembeli';
-        }
         $user = User::create($params);
         return $user;
     }
