@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Services\AuthService;
 use App\Services\UserService;
 
+use App\Http\Resources\UserResource;
 use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -27,8 +29,7 @@ class AuthController extends BaseController
             
             $user = Auth::user();
             $success['token'] = $user->createToken('login_token')->plainTextToken;
-            $success['id'] = $user->id;
-            $success['username'] = $user->username;
+            $success['user'] = json_encode(new UserResource($user));
             return $this->sendResponse($success, "Login Successful.");
         }catch(\Exception $e){
             return $this->sendError("Login Failed", $e->getMessage());
