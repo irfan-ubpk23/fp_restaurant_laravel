@@ -30,7 +30,6 @@
                         <tr>
                             <th>Id</th>
                             <th>User</th>
-                            <th>Meja</th>
                             <th>Transaksi</th>
                             <th>Tanggal dan Jam</th>
                             <th>Status Reservasi</th>
@@ -43,7 +42,6 @@
                                 <td>{{ $reservasi->id }}</td>
                                 <td>{{ $reservasi->user->username }}</td>
                                 <td>{{ $reservasi->transaksi_id }} </td>
-                                <td>{{ $reservasi->meja_id }}</td>
                                 <td>{{ $reservasi->tanggal_dan_jam }}</td>
                                 <td>{{ $reservasi->status_reservasi }}</td>
                                 <td>{{ $reservasi->created_at }} </td>

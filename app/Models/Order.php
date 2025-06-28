@@ -11,6 +11,7 @@ class Order extends Model
     protected $table = 'order';
     protected $fillable = [
         'user_id',
+        'meja_id',
         'nomor_antrian',
         'status_order',
         'jenis_order',
@@ -25,5 +26,10 @@ class Order extends Model
     public function user() : HasOne
     {
         return $this::HasOne(User::class, 'id', 'user_id');
+    }
+
+    public function meja() : HasOne
+    {
+        return $this::HasOne(Meja::class, 'id', 'meja_id');
     }
 }

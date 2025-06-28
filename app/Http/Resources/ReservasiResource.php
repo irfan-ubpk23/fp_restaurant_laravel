@@ -17,13 +17,12 @@ class ReservasiResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'meja_id' => $this->meja_id,
             'transaksi_id' => $this->transaksi_id,
             'tanggal_dan_jam' => $this->tanggal_dan_jam,
             'status_reservasi' => $this->status_reservasi,
             
-            'meja' => $this->meja,
-            
+            'transaksi.meja' => new MejaResource($this->transaksi->meja),
+
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

@@ -32,7 +32,6 @@ class ReservasiService
     {   
         $validator = Validator::make($params, [
             "user_id" => "required",
-            "meja_id" => "required",
             'transaksi_id' => 'required',
             "tanggal_dan_jam" => "required",
         ]);
@@ -52,7 +51,6 @@ class ReservasiService
         $validator = Validator::make($params, [
             "id" => "required",
             "user_id" => "",
-            "meja_id" => "",
             'transaksi_id' => '',
             "tanggal_dan_jam" => "",
             "status_reservasi" => ""
@@ -65,9 +63,6 @@ class ReservasiService
         $reservasi = Reservasi::find($id);
         if (isset($params["user_id"])){
             $reservasi->user_id = $params['user_id'];
-        }
-        if (isset($params["meja_id"])){
-            $reservasi->meja_id = $params['meja_id'];
         }
         if (isset($params["transaksi_id"])){
             $reservasi->order_id = $params['transaksi_id'];

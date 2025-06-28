@@ -14,13 +14,16 @@ return new class extends Migration
         Schema::create('order', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('meja_id')->nullable();
+
             $table->string('nomor_antrian');
             $table->enum('status_order', ['proses', 'sudah'])->default('proses');
             $table->enum("jenis_order", ['dinein', 'reservasi', 'takeaway']);
-            $table->text('keterangan');
+            $table->text('keterangan')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('meja_id')->references('id')->on('meja');
         });
     }
 

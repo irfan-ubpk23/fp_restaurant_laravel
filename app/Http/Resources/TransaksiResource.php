@@ -21,6 +21,7 @@ class TransaksiResource extends JsonResource
             'order_id' => $this->order_id,
             'total_harga' => $this->total_harga,
             'kode_transaksi' => $this->kode_transaksi,
+            'bukti_pembayaran' => $this->bukti_pembayaran,
             'status_pembayaran' => $this->status_pembayaran,
             'metode_pembayaran' => $this->metode_pembayaran,
             

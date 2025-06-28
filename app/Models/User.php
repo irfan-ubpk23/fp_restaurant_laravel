@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -54,4 +56,9 @@ class User extends Authenticatable
 
         return $this->api_token;
     }*/
+
+    public function activity_logs(): HasMany
+    {
+        return $this::HasMany(ActivityLog::class, 'user_id', 'id');
+    }
 }

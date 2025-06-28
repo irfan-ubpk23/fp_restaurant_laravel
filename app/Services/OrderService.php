@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Order;
+use App\Models\Meja;
 use App\Http\Resources\OrderResource;
 
 use Illuminate\Support\Facades\Validator;
@@ -33,6 +34,7 @@ class OrderService
     {   
         $validator = Validator::make($params, [
             "user_id" => "required",
+            "meja_id" => '',
             // "nomor_antrian" => "required",
             // "status_order" => "required",
             "jenis_order" => "required",
@@ -42,6 +44,15 @@ class OrderService
         if ($validator->fails()){
             throw new \Exception(implode("\n", $validator->errors()->all()));
         }
+        if ($params["jenis_order"] != 'takeaway'){
+            if (! isset($params["meja_id"])){
+                throw new \Exception("membutuhkan Meja!");
+            }else{
+                $meja = Meja::find($params['meja_id']);
+                $meja->status_meja = 'terisi';
+                $meja->save();
+            }
+        }
 
         $last_order = Order::whereDay("created_at", "=", date("d"))
             ->orderBy('nomor_antrian', 'desc')
@@ -50,13 +61,6 @@ class OrderService
             $params["nomor_antrian"] = intval($last_order[0]->nomor_antrian) + 1;
         }else{
             $params["nomor_antrian"] = 1;
-        }
-
-        if (! isset($params["status_order"])){
-            $params["status_order"] = 'proses';
-        }
-        if (! isset($params["keterangan"])){
-            $params["keterangan"] = " ";
         }
         $meja = Order::create($params);
         return $meja;
@@ -69,6 +73,7 @@ class OrderService
         $validator = Validator::make($params, [
             "id" => "required",
             "user_id" => "",
+            "meja_id" => "",
             "nomor_antrian" => "",
             "status_order" => "",
             'jenis_order' => "",
@@ -83,11 +88,22 @@ class OrderService
         if (isset($params["user_id"])){
             $order->user_id = $params['user_id'];
         }
+        if (isset($params['meja_id'])){
+            $order->meja_id = $params['meja_id'];
+        }
         if (isset($params["nomor_antrian"])){
             $order->nomor_antrian = $params['nomor_antrian'];
         }
         if (isset($params["status_order"])){
             $order->status_order = $params['status_order'];
+            
+            if ($order->jenis_order != "takeaway"){
+                $meja = Meja::find($order->meja_id);
+                if ($order->status_order == 'sudah'){
+                    $meja->status_meja = 'tersedia';
+                }
+                $meja->save();
+            }
         }
         if (isset($params["jenis_order"])){
             $order->jenis_order = $params['jenis_order'];
@@ -113,10 +129,4 @@ class OrderService
         $order = Order::find($id);
         $order->delete();
     }
-
-    protected function calculate_nomor_antrian() : int
-    {
-        
-    }
-
 }

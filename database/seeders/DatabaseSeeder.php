@@ -39,61 +39,61 @@ class DatabaseSeeder extends Seeder
             'role' => 'dapur'
         ]);
 
-        DB::table('kategori')->insert([
-            'nama_kategori' => 'makanan'
-        ]);
+        // DB::table('kategori')->insert([
+        //     'nama_kategori' => 'makanan'
+        // ]);
 
-        DB::table('menu')->insert([
-            "id_kategori" => "1",
-            "nama_menu" => "mie ayam",
-            "gambar_menu" => "images/cocaine.jpeg",
-            "harga_menu" => "15000",
-            "status_menu" => "ada",
-            "waktu_saji" => "5"
-        ]);
+        // DB::table('menu')->insert([
+        //     "id_kategori" => "1",
+        //     "nama_menu" => "mie ayam",
+        //     "gambar_menu" => "images/cocaine.jpeg",
+        //     "harga_menu" => "15000",
+        //     "status_menu" => "ada",
+        //     "waktu_saji" => "5"
+        // ]);
 
-        DB::table('meja')->insert([
-            "nama_meja" => "1",
-            'batas_orang' => '2',
-            'status_meja' => 'tersedia'
-        ]);
+        // DB::table('meja')->insert([
+        //     "nama_meja" => "1",
+        //     'batas_orang' => '2',
+        //     'status_meja' => 'tersedia'
+        // ]);
 
         
 
-        DB::table('order')->insert([
-            "user_id" => '1',
-            'nomor_antrian' => '1',
-            'status_order' => 'proses',
-            'keterangan' => 'asd'
-        ]);
+        // DB::table('order')->insert([
+        //     "user_id" => '1',
+        //     'nomor_antrian' => '1',
+        //     'status_order' => 'proses',
+        //     'keterangan' => 'asd'
+        // ]);
 
-        DB::table('order_detail')->insert([
-            "order_id" => '1',
-            'menu_id' => '1',
-            'jumlah' => '2'
-        ]);
+        // DB::table('order_detail')->insert([
+        //     "order_id" => '1',
+        //     'menu_id' => '1',
+        //     'jumlah' => '2'
+        // ]);
 
-        DB::table('order_detail')->insert([
-            "order_id" => '1',
-            'menu_id' => '1',
-            'jumlah' => '5'
-        ]);
+        // DB::table('order_detail')->insert([
+        //     "order_id" => '1',
+        //     'menu_id' => '1',
+        //     'jumlah' => '5'
+        // ]);
 
-        DB::table('transaksi')->insert([
-            'user_id' => '1',
-            'order_id' => '1',
-            'metode_pembayaran' => 'qris',
-            'total_harga' => '2000',
-            'kode_transaksi' => '12516',
-            'status_pembayaran' => 'belum',
-        ]);
+        // DB::table('transaksi')->insert([
+        //     'user_id' => '1',
+        //     'order_id' => '1',
+        //     'metode_pembayaran' => 'qris',
+        //     'total_harga' => '2000',
+        //     'kode_transaksi' => '12516',
+        //     'status_pembayaran' => 'belum',
+        // ]);
                 
-        DB::table('reservasi')->insert([
-            'user_id' => '1',
-            'meja_id' => '1',
-            'transaksi_id' => '1',
-            'tanggal_dan_jam' => '2025-06-1 15:00:00',
-            'status_reservasi' => 'menunggu',
-        ]);
+        // DB::table('reservasi')->insert([
+        //     'user_id' => '1',
+        //     'meja_id' => '1',
+        //     'transaksi_id' => '1',
+        //     'tanggal_dan_jam' => '2025-06-1 15:00:00',
+        //     'status_reservasi' => 'menunggu',
+        // ]);
     }
 }

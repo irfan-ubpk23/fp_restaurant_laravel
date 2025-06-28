@@ -17,6 +17,7 @@ class OrderResource extends JsonResource
         return [
             "id" => $this->id,
             "user_id" => $this->user_id,
+            'meja_id' => $this->meja_id,
             "nomor_antrian" => $this->nomor_antrian,
             "status_order" => $this->status_order,
             "jenis_order" => $this->jenis_order,
@@ -25,6 +26,7 @@ class OrderResource extends JsonResource
             'updated_at' => $this->updated_at,
 
             "user" => new UserResource($this->user),
+            "meja" => new MejaResource($this->meja),
             "details" => OrderDetailResource::collection($this->details)
         ];
     }

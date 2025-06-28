@@ -18,9 +18,9 @@ return new class extends Migration
             
             $table->enum("metode_pembayaran", ['tunai', 'qris']);
             $table->integer('total_harga');
-            $table->string('kode_transaksi');
+            $table->string('kode_transaksi')->unique();
             $table->enum('status_pembayaran', ['belum', 'selesai'])->default('belum');
-
+            $table->text("bukti_pembayaran")->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

@@ -35,13 +35,18 @@ class TransaksiService
             "order_id" => "required",
             "metode_pembayaran" => "required",
             "total_harga" => "required",
+            "bukti_pembayaran" => ""
         ]);
 
         if ($validator->fails()){
             throw new \Exception(implode("\n", $validator->errors()->all()));
         }
 
-        $params["kode_transaksi"] = date('YmdHisu');
+        if (isset($params["bukti_pembayaran"])){
+            $params["bukti_pembayaran"] = $this->uploadImageAndGetPath($params["bukti_pembayaran"]);
+        }
+
+        $params["kode_transaksi"] = $params['order_id'] + date('YmdHis');
         $transaksi = Transaksi::create($params);
         return $transaksi;
     }
@@ -58,6 +63,7 @@ class TransaksiService
             "total_harga" => "",
             "kode_transaksi" => "",
             "status_pembayaran" => "",
+            "bukti_pembayaran" => 'image|mimes:jpeg,png,jpg',
         ]);
 
         if ($validator->fails()){
@@ -82,6 +88,10 @@ class TransaksiService
         }
         if (isset($params["status_pembayaran"])){
             $transaksi->status_pembayaran = $params['status_pembayaran'];
+        }
+        if (isset($params["bukti_pembayaran"])){
+            // throw new \Exception(count($params['bukti_pembayaran']));
+            $transaksi->bukti_pembayaran = $this->uploadImageAndGetPath($params["bukti_pembayaran"]);
         }
         $transaksi->save();
 
@@ -114,5 +124,25 @@ class TransaksiService
 
         $transaksis = Transaksi::where('user_id', $user_id)->get();
         return TransaksiResource::collection($transaksis);
+    }
+
+    public function where_kode_transaksi($kode_transaksi)
+    {
+        $validator = Validator::make(["kode_transaksi"=>$user_id], [
+            "kode_transaksi" => "required"
+        ]);
+
+        if ($validator->fails()){
+            throw new \Exception(implode("\n", $validator->errors()->all()));
+        }
+
+        $transaksis = Transaksi::where('kode_transaksi', $kode_transaksi)->get();
+        return TransaksiResource::collection($transaksis);
+    }
+
+    public function uploadImageAndGetPath($imageFile){
+        $nama_gambar = time() . '.' . $imageFile->extension();
+        $imageFile->move(public_path("images"), $nama_gambar);
+        return URL::to("/images/" . $nama_gambar);
     }
 }

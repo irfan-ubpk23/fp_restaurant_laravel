@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('meja', function (Blueprint $table) {
             $table->id();
-            $table->string("nama_meja");
+            $table->string("nama_meja")->unique();
             $table->integer('batas_orang');
-            $table->enum("status_meja", ['tersedia', 'terisi']);
+            $table->enum("status_meja", ['tersedia', 'terisi'])->default('tersedia');
             $table->timestamps();
         });
     }

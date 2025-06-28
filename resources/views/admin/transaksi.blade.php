@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row row-cols-2 border" id="menuRow" style="display:none">
-        <img data-field-src="{{ asset("") }}" alt="" id="gambar_menu" class="col-4 field">
+        <img data-field-src="" alt="" id="gambar_menu" class="col-4 field">
 
         <div class="col-8 row row-cols-2 my-auto">
             <label for="nama_menu" class="col field">Menu</label>
@@ -18,6 +18,9 @@
                 <div class="row row-cols-2" id="orderField">
                     <label for="user">User</label>
                     <p id="user" class="order-field"></p>
+
+                    <label for="meja">Meja</label>
+                    <p id="meja" class="order-field"></p>
                     
                     <label for="nomor_antrian">Nomor Antrian</label>
                     <p id="nomor_antrian" class="order-field"></p>
@@ -35,6 +38,13 @@
                     <div class="col-12" id="menuField"></div>
                 </div>
             </div>
+        </x-slot:body>
+    </x-modal>
+
+    <x-modal modalId="buktiModal" title="Bukti Pembayaran">
+        <x-slot:body>
+            <img id="buktiImg" src="" alt="" class="img-fluid">
+            <p id="buktiTidakAda" style="display:none">Bukti tidak ada</p>
         </x-slot:body>
     </x-modal>
 
@@ -72,6 +82,7 @@
                             <th>Total Harga</th>
                             <th>Kode Transaksi</th>
                             <th>Status Pembayaran</th>
+                            <th>Bukti Pembayaran</th>
                             <th>Created At</th>
                         </tr>
                     </x-slot:head>
@@ -86,9 +97,16 @@
                                     </button>
                                 </td>
                                 <td>{{ $transaksi->metode_pembayaran }}</td>
-                                <td>{{ $transaksi->total_harga }}</td>
+                                <td>
+                                    Rp. {{ number_format($transaksi->total_harga) }}
+                                </td>
                                 <td>{{ $transaksi->kode_transaksi }}</td>
                                 <td>{{ $transaksi->status_pembayaran }}</td>
+                                <td>
+                                    <button class="btn btn-circle btn-primary" id="show-bukti-btn" data-bukti="{{ $transaksi->bukti_pembayaran }}">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </td>
                                 <td>{{ $transaksi->created_at }} </td>
                             </tr>
                         @endforeach
@@ -103,11 +121,17 @@
 <script>
     document.addEventListener("DOMContentLoaded", ()=>{
         const orderModal = new bootstrap.Modal("#orderModal");
+        const buktiModal = new bootstrap.Modal("#buktiModal");
+        const buktiImg = document.getElementById("buktiImg");
+        const buktiTidakAda = document.getElementById("buktiTidakAda");
         const menuRow = document.getElementById("menuRow");
         const menuField = document.getElementById("menuField");
 
         document.querySelectorAll("#show-order-btn").forEach((e) => {
             e.addEventListener("click", ()=>show_order(e));
+        });
+        document.querySelectorAll("#show-bukti-btn").forEach((e) => {
+            e.addEventListener("click", ()=>show_bukti(e));
         });
         
         function show_order(button){
@@ -117,6 +141,9 @@
             document.querySelectorAll("#orderField .order-field").forEach((e)=>{
                 if (e.id == "user"){
                     e.innerText = ":" + order_data["user"]["username"] + "(" + order_data["user"]["role"] + ")";
+                }
+                else if(e.id=="meja" && order_data['jenis_order'] !== "takeaway"){
+                    e.innerText = ":" + order_data["meja"]['nama_meja'];
                 }else{
                     e.innerText = ":" + order_data[e.id];
                 }
@@ -126,7 +153,7 @@
             const detail_fragment = document.createDocumentFragment();
             for (let index = 0; index < order_data['details'].length; index++) {
                 const row_data = order_data['details'][index];
-
+                
                 const row = menuRow.cloneNode(true);
                 row.style.cssText="";
                 
@@ -152,6 +179,20 @@
                 detail_fragment.appendChild(row);
             };
             menuField.appendChild(detail_fragment);
+        }
+
+        function show_bukti(button){
+            buktiModal.show();
+            
+            const buktiSrc = button.getAttribute("data-bukti")
+            if (buktiSrc){
+                buktiImg.src = buktiSrc;
+                buktiTidakAda.style = "display:none";
+            }
+            else{
+                buktiImg.innerText = "bukti tidak ada";
+                buktiTidakAda.style = "";
+            }
         }
     });
 </script>
