@@ -72,7 +72,7 @@ class MenuService
             $menu->id_kategori = $params['id_kategori'];
         }
         if (isset($params["nama_menu"])){
-            $menu->harga_menu = $params['harga_menu'];
+            $menu->nama_menu = $params['nama_menu'];
         }
         if (isset($params["gambar_menu"])){
             $menu->gambar_menu = $this->uploadImageAndGetPath($params['gambar_menu']);;
