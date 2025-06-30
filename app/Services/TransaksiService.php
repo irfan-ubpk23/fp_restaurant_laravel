@@ -6,6 +6,7 @@ use App\Models\Transaksi;
 use App\Http\Resources\TransaksiResource;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\URL;
 
 class TransaksiService
 {
