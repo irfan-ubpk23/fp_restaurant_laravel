@@ -5,7 +5,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                class="fas fa-download fa-sm text-white-50"></i> Print Laporan</a>
     </div>
 
     <!-- Content Row -->
@@ -18,7 +18,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Transaksi (Bulanan)</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Rp.{{ $total_monthly_transaksis }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Rp.{{ number_format($total_monthly_transaksis) }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -36,7 +36,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Transaksi (Tahunan)</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Rp.{{ $total_annually_transaksis }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Rp.{{ number_format($total_annually_transaksis) }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -54,7 +54,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                 Total Transaksi</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Rp.{{ $total_all_transaksis }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Rp.{{ number_format($total_all_transaksis) }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -95,28 +95,15 @@
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Item Terlaris</h6>
                     <div>
-                        <select name="" id="" class="form-select">
-                            <option value="">Bulan</option>
-                            <option value="">Tahun</option>
+                        <select id="item-terlaris-select" class="form-select">
+                            <option value="bulan">Bulan</option>
+                            <option value="tahun">Tahun</option>
                         </select>
                     </div>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2">
-                        <canvas id="myPieChart"></canvas>
-                    </div>
-                    <div class="mt-4 text-center small">
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-primary"></i> Mie Ayam
-                        </span>
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-success"></i> Bakso
-                        </span>
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-info"></i> Teh Jus
-                        </span>
-                    </div>
+                    <x-item-terlaris-pie id="terlarisPie"></x-item-terlaris-pie>
                 </div>
             </div>
         </div>
@@ -129,17 +116,15 @@
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Transaksi Overview</h6>
                     <div>
-                        <select name="" id="" class="form-select">
-                            <option value="">Bulan</option>
-                            <option value="">Tahun</option>
+                        <select id="transaksi-overview-select" class="form-select">
+                            <option value="bulan">Bulan</option>
+                            <option value="tahun">Tahun</option>
                         </select>
                     </div>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <div class="chart-area">
-                        <canvas id="myAreaChart"></canvas>
-                    </div>
+                    <x-transaksi-overview-area id="overviewArea"></x-transaksi-overview-area>
                 </div>
             </div>
         </div>
@@ -149,10 +134,18 @@
 @stop
 
 @push('js')
-<!-- Page level plugins -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js" integrity="sha512-hZf9Qhp3rlDJBvAKvmiG+goaaKRZA6LKUO35oK6EsM0/kjPK32Yw7URqrq3Q+Nvbbt8Usss+IekL7CRn83dYmw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    const terlarisPie = new ItemTerlarisPie('terlarisPie');
+    const overviewArea = new TransaksiOverviewArea('overviewArea');
+    
+    terlarisPie.load_data("bulan");
+    overviewArea.load_data("bulan");
 
-<!-- Page level custom scripts -->
-<script src="{{ asset('js/demo/chart-area-demo.js')  }}"></script>
-<script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
+    document.getElementById("item-terlaris-select").addEventListener("change", (event)=>{
+        terlarisPie.load_data(event.target.value);
+    })
+    document.getElementById("transaksi-overview-select").addEventListener("change", (event)=>{
+        overviewArea.load_data(event.target.value);
+    })
+</script>
 @endpush
