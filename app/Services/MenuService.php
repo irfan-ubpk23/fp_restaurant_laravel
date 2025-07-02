@@ -105,21 +105,13 @@ class MenuService
         $menu->delete();
     }
 
-    public function terlaris($params){
-        $validator = Validator::make($params, [
-            "range" => "required"
-        ]);
-
-        if ($validator->fails()){
-            throw new \Exception(implode("\n", $validator->errors()->all()));
-        }
-
+    public function terlaris($range){
         $menus = Menu::all();
         $menus_terlaris = [];
 
         foreach ($menus as $menu){
             $order_detail_query;
-            if ($params['range'] == 'bulan'){
+            if ($range == 'bulan'){
                 $order_detail_query = OrderDetail::whereMonth('created_at', '=', date('m'));
             }else{
                 $order_detail_query = OrderDetail::whereYear('created_at', '=', date('Y'));

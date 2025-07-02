@@ -40,7 +40,7 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::put("/menus/{id}", 'update');
         Route::delete("/menus/{id}", 'destroy');
 
-        Route::get("/menus/terlaris", "terlaris");
+        Route::get("/menus/terlaris/{range}", "terlaris");
     });
 
     Route::controller(MejaController::class)->group(function(){
@@ -77,6 +77,8 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post('/transaksis/{id}', 'update');
         Route::get('/transaksis/{id}', 'show');
         Route::delete("/transaksis/{id}", 'destroy');
+
+        Route::get("/transaksis/overview/{mode}", 'overview');
 
         Route::get("/transaksis/user/{id}", 'where_user_id');
         Route::get("/transaksis/kode_transaksi/", 'where_kode_transaksi');

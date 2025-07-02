@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use \DateTime;
+
 use App\Models\Transaksi;
 use App\Http\Resources\TransaksiResource;
 
@@ -139,6 +141,29 @@ class TransaksiService
 
         $transaksis = Transaksi::where('kode_transaksi', $kode_transaksi)->get();
         return TransaksiResource::collection($transaksis);
+    }
+
+    public function overview($mode){
+        $datas = [];
+
+        if ($mode == "bulan"){
+            for ($i=0;$i<12;$i++){
+                $month_name = DateTime::createFromFormat('!m', $i + 1)->format('F');
+                $datas[$month_name] = Transaksi::whereMonth('created_at', '=', $i + 1)->sum("total_harga");
+            }
+        }else{
+            $latest = $this->get_date(Transaksi::latest()->first()->created_at);
+            $oldest = $this->get_date(Transaksi::oldest()->first()->created_at);
+            for ($i=(int) $oldest[0];$i<=(int) $latest[0];$i++){
+                $datas[$i] = Transaksi::whereYear('created_at', '=', $i)->sum('total_harga');
+            }
+        }
+
+        return $datas;
+    }
+
+    public function get_date($from_date_string){
+        return explode('-', substr($from_date_string, 0, 10));
     }
 
     public function uploadImageAndGetPath($imageFile){

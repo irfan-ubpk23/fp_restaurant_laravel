@@ -62,4 +62,14 @@ class MenuController extends BaseController
             return $this->sendError($e->getMessage());
         }
     }
+
+    public function terlaris(Request $request, MenuService $menu_service){
+        try{
+            $menus = $menu_service->terlaris($request->range);
+
+            return $this->sendResponse($menus);
+        }catch(\Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
 }

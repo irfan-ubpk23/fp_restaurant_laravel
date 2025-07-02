@@ -44,6 +44,7 @@ class TransaksiController extends BaseController
     public function update(Request $request, TransaksiService $transaksi_service): JsonResponse
     {
         try{
+            // return $this->sendResponse($request->hasFile('bukti_pembayaran'));
             $transaksi = $transaksi_service->update($request->id, $request->all());
 
             return $this->sendResponse($transaksi, "Transaksi berhasil diupdate");
@@ -63,10 +64,32 @@ class TransaksiController extends BaseController
         }
     }
 
+    public function overview(Request $request, TransaksiService $transaksi_service)
+    {
+        try{
+            $transaksis = $transaksi_service->overview($request->mode);
+
+            return $this->sendResponse($transaksis);
+        }
+        catch(\Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
+
     public function where_user_id(Request $request, TransaksiService $transaksi_service)
     {
         try{
             $transaksis = $transaksi_service->where_user_id($request->id);
+
+            return $this->sendResponse($transaksis);
+        }catch(\Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
+
+    public function where_kode_transaksi(Request $request, TransaksiService $transaksi_service){
+        try{
+            $transaksis = $transaksi_service->where_kode_transaksi($request->id);
 
             return $this->sendResponse($transaksis);
         }catch(\Exception $e){
