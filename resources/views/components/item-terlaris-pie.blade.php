@@ -1,4 +1,4 @@
-<div id="{{ $id }}">
+<div id="{{ $divId }}">
     <div class="chart-pie pt-4 pb-2">
         <canvas class="item-terlaris-chart-canvas"></canvas>
     </div>

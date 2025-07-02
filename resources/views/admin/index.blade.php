@@ -103,7 +103,7 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <x-item-terlaris-pie id="terlarisPie"></x-item-terlaris-pie>
+                    <x-item-terlaris-pie divId="terlarisPie"></x-item-terlaris-pie>
                 </div>
             </div>
         </div>
@@ -124,7 +124,7 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <x-transaksi-overview-area id="overviewArea"></x-transaksi-overview-area>
+                    <x-transaksi-overview-area divId="overviewArea"></x-transaksi-overview-area>
                 </div>
             </div>
         </div>
