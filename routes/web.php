@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function(){
 });
 
 Route::middleware(UserIsAdmin::class)->group(function() {
+    Route::get('/laporan', [HomeController::class, 'admin_laporan']);
     Route::controller(KategoriController::class)->group(function() {
         Route::get('/kategori', 'index')->name('kategori');
         Route::post("/kategori", 'store')->name("kategori.store");

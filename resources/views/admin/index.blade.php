@@ -1,11 +1,30 @@
 @extends('layouts.admin')
 
 @section('content')
+    <x-modal modalId="printLaporanModal" title="Print Laporan">
+        @csrf
+        <x-slot:body>
+            <form action="/laporan" method="GET" id="print-laporan-form">
+                <div class="row row-cols-2">
+                    <label for="dari">Dari: </label>
+                    <input class="form-control" required type="date" name="dari" id="dari">
+    
+                    <label for="sampai">Sampai: </label>
+                    <input class="form-control" required type="date" name="sampai" id="sampai">
+                </div>
+            </form>
+            </x-slot:body>
+            <x-slot:footer>
+                <button type="submit" id="print-laporan-btn" class="btn btn-primary">Print</button>
+            </x-slot:footer>
+    </x-modal>
+
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                class="fas fa-download fa-sm text-white-50"></i> Print Laporan</a>
+        <button id="show-print-modal-btn" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-download fa-sm text-white-50"></i> Print Laporan
+        </button>
     </div>
 
     <!-- Content Row -->
@@ -135,12 +154,27 @@
 
 @push('js')
 <script>
+    const printLaporanModal = new bootstrap.Modal('#printLaporanModal');
     const terlarisPie = new ItemTerlarisPie('terlarisPie');
     const overviewArea = new TransaksiOverviewArea('overviewArea');
     
     terlarisPie.load_data("bulan");
     overviewArea.load_data("bulan");
 
+    document.getElementById("show-print-modal-btn").addEventListener("click", ()=>{
+        printLaporanModal.show();
+    })
+    document.getElementById("print-laporan-btn").addEventListener("click", ()=>{
+        const form = document.getElementById('print-laporan-form');
+        const inputs = form.querySelectorAll('input');
+        
+        if (inputs[0].value != '' && inputs[1].value != ''){
+            form.submit();
+        }
+        else{
+            alert("Dari dan sampai tidak boleh kosong!");
+        }
+    })
     document.getElementById("item-terlaris-select").addEventListener("change", (event)=>{
         terlarisPie.load_data(event.target.value);
     })
