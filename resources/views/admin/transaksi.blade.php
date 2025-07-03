@@ -190,6 +190,7 @@
                 buktiTidakAda.style = "display:none";
             }
             else{
+                buktiImg.src = "";
                 buktiImg.innerText = "bukti tidak ada";
                 buktiTidakAda.style = "";
             }
