@@ -149,13 +149,13 @@ class TransaksiService
         if ($mode == "bulan"){
             for ($i=0;$i<12;$i++){
                 $month_name = DateTime::createFromFormat('!m', $i + 1)->format('F');
-                $datas[$month_name] = Transaksi::whereMonth('created_at', '=', $i + 1)->sum("total_harga");
+                $datas[$month_name] = Transaksi::where('status_pembayaran', '=', 'selesai')->whereMonth('created_at', '=', $i + 1)->sum("total_harga");
             }
         }else{
             $latest = $this->get_date(Transaksi::latest()->first()->created_at);
             $oldest = $this->get_date(Transaksi::oldest()->first()->created_at);
             for ($i=(int) $oldest[0];$i<=(int) $latest[0];$i++){
-                $datas[$i] = Transaksi::whereYear('created_at', '=', $i)->sum('total_harga');
+                $datas[$i] = Transaksi::where('status_pembayaran', '=', 'selesai')->whereYear('created_at', '=', $i)->sum('total_harga');
             }
         }
 

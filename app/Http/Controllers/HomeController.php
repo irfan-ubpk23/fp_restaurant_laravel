@@ -32,10 +32,10 @@ class HomeController extends Controller
     public function dashboard(OrderService $order_service){
         $role = Auth::user()->role;
         if ($role === "admin"){
-            $orders_count = Transaksi::count();
-            $total_all_transaksis = Transaksi::sum('total_harga');
-            $total_monthly_transaksis = Transaksi::whereMonth('created_at', ">=", date('m'))->sum("total_harga");
-            $total_annually_transaksis = Transaksi::whereYear('created_at', ">=", date('Y'))->sum("total_harga");
+            $orders_count = Transaksi::where('status_pembayaran', 'selesai')->count();
+            $total_all_transaksis = Transaksi::where('status_pembayaran', 'selesai')->sum('total_harga');
+            $total_monthly_transaksis = Transaksi::where('status_pembayaran', 'selesai')->whereMonth('created_at', ">=", date('m'))->sum("total_harga");
+            $total_annually_transaksis = Transaksi::where('status_pembayaran', 'selesai')->whereYear('created_at', ">=", date('Y'))->sum("total_harga");
 
             return view("admin.index", [
                 "orders_count" => $orders_count,
@@ -73,7 +73,7 @@ class HomeController extends Controller
                 if (! array_key_exists($menu->nama_menu, $nama_menus)){
                     array_push($nama_menus, $menu->nama_menu);
                     array_push($all_menus, $menu);
-                    $jumlah_menus[$menu->id] = 1;
+                    $jumlah_menus[$menu->id] = $detail->jumlah;
     
                     if (array_key_exists($menu->kategori->id, $jumlah_kategoris) == false){
                         array_push($all_kategoris, $menu->kategori);
@@ -81,12 +81,12 @@ class HomeController extends Controller
                         $jumlah_kategoris[$menu->kategori->id] = 0;
                         $total_pendapatan_kategoris[$menu->kategori->id] = 0;
                     }
-                    $jumlah_kategoris[$menu->kategori->id] += $jumlah_menus[$menu->id];
-                    $total_pendapatan_kategoris[$menu->kategori->id] += $jumlah_menus[$menu->id] * $menu->harga_menu;
                 }
                 else{
-                    $jumlah_menus[$menu->id] += 1;
+                    $jumlah_menus[$menu->id] += $detail->jumlah;
                 }
+                $jumlah_kategoris[$menu->kategori->id] += $jumlah_menus[$menu->id];
+                $total_pendapatan_kategoris[$menu->kategori->id] += $jumlah_menus[$menu->id] * $menu->harga_menu;
             }
         }
 

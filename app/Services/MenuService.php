@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Menu;
 use App\Models\OrderDetail;
+use App\Models\Transaksi;
 use App\Http\Resources\MenuResource;
 
 use Illuminate\Support\Facades\Validator;
@@ -106,20 +107,36 @@ class MenuService
     }
 
     public function terlaris($range){
-        $menus = Menu::all();
+        $transaksi_query = Transaksi::where('status_pembayaran', 'selesai');
+        if ($range == 'bulan'){
+            $transaksi_query = $transaksi_query->whereMonth('created_at', '=', date('m'));
+        }else{
+            $transaksi_query = $transaksi_query->whereYear('created_at', '=', date('Y'));
+        }
+        $transaksis = $transaksi_query->get();
+        
+        $menus = [];
         $menus_terlaris = [];
+        $jumlah_menus = [];
+
+        foreach($transaksis as $transaksi){
+            foreach($transaksi->order->details as $detail){
+                $menu = $detail->menu;
+                if (! array_key_exists($menu->id, $jumlah_menus)){
+                    array_push($menus, $menu);
+                    $jumlah_menus[$menu->id] = $detail->jumlah;
+                }
+                else{
+                    $jumlah_menus[$menu->id] += $detail->jumlah;
+                }
+            }
+        }
 
         foreach ($menus as $menu){
-            $order_detail_query;
-            if ($range == 'bulan'){
-                $order_detail_query = OrderDetail::whereMonth('created_at', '=', date('m'));
-            }else{
-                $order_detail_query = OrderDetail::whereYear('created_at', '=', date('Y'));
-            }
             array_push($menus_terlaris, [
                 $menu->id,
                 $menu->nama_menu,
-                $order_detail_query->where("menu_id", $menu->id)->sum("jumlah")
+                $jumlah_menus[$menu->id]
             ]);
         }
         return $menus_terlaris;
