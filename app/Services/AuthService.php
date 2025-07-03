@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthService 
 {
-    public function login($email, $password) : User
+    public function login($email, $password, $expect_roles=[]) : User
     {
         $params = [
             "email" => $email,
@@ -26,12 +26,17 @@ class AuthService
             throw new \Exception(implode("\n", $validator->errors()->all()));
         }
         
+        $user = User::where('email', $email)->first();
+        
+        if (sizeof($expect_roles) > 0 && in_array($user->role, $expect_roles) == false){
+            throw new \Exception("Role tidak sesuai!");
+        }
+
         if (Auth::attempt($params) == false){
             throw new \Exception("Password atau Email Salah!");
         }
         
         return Auth::user();
-
     }
 
     public function check_user($username, $password)
