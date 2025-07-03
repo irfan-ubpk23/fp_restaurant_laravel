@@ -131,7 +131,7 @@ class TransaksiService
 
     public function where_kode_transaksi($kode_transaksi)
     {
-        $validator = Validator::make(["kode_transaksi"=>$user_id], [
+        $validator = Validator::make(["kode_transaksi"=>$kode_transaksi], [
             "kode_transaksi" => "required"
         ]);
 

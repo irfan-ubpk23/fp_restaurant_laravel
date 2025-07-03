@@ -81,7 +81,7 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::get("/transaksis/overview/{mode}", 'overview');
 
         Route::get("/transaksis/user/{id}", 'where_user_id');
-        Route::get("/transaksis/kode_transaksi/", 'where_kode_transaksi');
+        Route::get("/transaksis/kode_transaksi/{kode_transaksi}", 'where_kode_transaksi');
     });
 });
 
