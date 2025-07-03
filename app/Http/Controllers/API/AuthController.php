@@ -25,7 +25,7 @@ class AuthController extends BaseController
     public function login(Request $request, AuthService $auth_service)
     {
         try{
-            $user = $auth_service->login($request->email, $request->password);
+            $user = $auth_service->login($request->email, $request->password, $request->expect_roles);
             
             $user = Auth::user();
             $success['token'] = $user->createToken('login_token')->plainTextToken;
@@ -48,7 +48,10 @@ class AuthController extends BaseController
     public function check_token(Request $request){
         try{
             if ($request->user("sanctum")){
-                return $this->sendResponse("Token is valid.");
+                return $this->sendResponse([
+                    "role" => $request->user("sanctum")->role]
+                    , "Token is valid."
+                );
             }
             throw new \Exception('Token is not valid.');
         }catch(\Exception $e){
