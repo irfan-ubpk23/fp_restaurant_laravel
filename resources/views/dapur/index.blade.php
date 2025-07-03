@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row row-cols-2 border" id="menuRow" style="display:none">
-        <img data-field-src="{{ asset("") }}" alt="" id="gambar_menu" class="col-4 field">
+        <img data-field-src="   " alt="" id="gambar_menu" class="col-4 field">
 
         <div class="col-8 row row-cols-2 my-auto">
             <label for="nama_menu" class="col field">Menu</label>
@@ -42,7 +42,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Order Table</h6>
                 </div>
                 <div class="card-body">
-                    <x-datatable>
+                    <x-datatable datatable-id="datatable">
                         <x-slot:head>
                             <tr>
                                 <th>Nomor Antrian</th>
@@ -63,7 +63,7 @@
                                     <td>
                                         <select name="" id="status-select" value="{{ $order->status_order }}" data-id="{{ $order->id }}" class="form-select">
                                             <option value="proses">Proses</option>
-                                            <option value="sudah">Sudah</option>
+                                            <option value="sudah dibuat">Sudah Dibuat</option>
                                         </select>
                                     </td>
                                     <td>{{ $order->keterangan }}</td>
@@ -164,7 +164,7 @@
         }
 
         function cancel_status(){
-            current_status_button.value = current_status_button.value === "proses" ? "sudah" : "proses";
+            current_status_button.value = current_status_button.value === "proses" ? "sudah dibuat" : "proses";
         }
     });
 </script>
