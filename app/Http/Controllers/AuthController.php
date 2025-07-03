@@ -17,7 +17,7 @@ class AuthController extends Controller
 
     public function login(Request $request, AuthService $authService){
         try {
-            $user = $authService->login($request->email, $request->password);
+            $user = $authService->login($request->email, $request->password, ['admin', 'dapur']);
             Log::info("User log in", ['user_id' => $user->id]);
 
             return redirect()->intended('dashboard');
