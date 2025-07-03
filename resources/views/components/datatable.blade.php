@@ -41,10 +41,10 @@
         });
         
         const filterRow = document.getElementById("filter-row");
-        const filterRowPlacement = document.getElementById("{{ $filterRowPlacement }}");
         const filterRowClear = document.getElementById("filter-row-clear");
         const dibuatDari = document.getElementById("dibuat-dari");
         const dibuatSampai = document.getElementById("dibuat-sampai");
+        const filterRowPlacement = document.getElementById("{{ $filterRowPlacement }}");
 
         dibuatDari.addEventListener("input", datatable.draw);
         dibuatSampai.addEventListener("input", datatable.draw);
@@ -55,8 +55,10 @@
         });
 
         filterRow.remove();
-        filterRowPlacement.appendChild(filterRow);
-        filterRow.style = "";
+        if (filterRowPlacement){
+            filterRowPlacement.appendChild(filterRow);
+            filterRow.style = "";
+        }
 
         datatable.search.fixed('range', function (searchStr, data, index) {
             const min = new Date(dibuatDari.value);
