@@ -98,7 +98,7 @@ class TransaksiController extends BaseController
 
     public function where_kode_transaksi(Request $request, TransaksiService $transaksi_service){
         try{
-            $transaksis = $transaksi_service->where_kode_transaksi($request->all());
+            $transaksis = $transaksi_service->where_kode_transaksi($request->kode_transaksi);
 
             return $this->sendResponse($transaksis);
         }catch(\Exception $e){
