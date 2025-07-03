@@ -44,7 +44,7 @@ class HomeController extends Controller
                 "total_annually_transaksis" => $total_annually_transaksis
             ]);
         }else if($role === "dapur"){
-            return view("dapur.index", ["orders"=>$order_service->all()]);
+            return view("dapur.index", ["orders"=>$order_service->today()]);
         }else{
             return back();
         }

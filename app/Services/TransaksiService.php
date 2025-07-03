@@ -18,6 +18,10 @@ class TransaksiService
         return TransaksiResource::collection(Transaksi::all());
     }
 
+    public function today(){
+        return TransaksiResource::collection(Transaksi::whereDate('created_at', date('Y-m-d'))->get());
+    }
+
     public function show($id) : Transaksi
     {
         $validator = Validator::make(["id"=>$id], [

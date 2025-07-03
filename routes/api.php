@@ -72,16 +72,17 @@ Route::middleware('auth:sanctum')->group(function(){
     });
 
     Route::controller(TransaksiController::class)->group(function(){
+        Route::get("/transaksis/today/", 'today');
+        Route::get("/transaksis/overview/{mode}", 'overview');
+        
+        Route::get("/transaksis/user/{id}", 'where_user_id');
+        Route::get("/transaksis/kode_transaksi/{kode_transaksi}", 'where_kode_transaksi');
+        
         Route::get("/transaksis", 'index');
         Route::post("/transaksis", 'store');
         Route::post('/transaksis/{id}', 'update');
         Route::get('/transaksis/{id}', 'show');
         Route::delete("/transaksis/{id}", 'destroy');
-
-        Route::get("/transaksis/overview/{mode}", 'overview');
-
-        Route::get("/transaksis/user/{id}", 'where_user_id');
-        Route::get("/transaksis/kode_transaksi/{kode_transaksi}", 'where_kode_transaksi');
     });
 });
 

@@ -19,6 +19,15 @@ class TransaksiController extends BaseController
         }
     }
 
+    public function today(TransaksiService $transaksi_service): JsonResponse
+    {
+        try{
+            return $this->sendResponse($transaksi_service->today());
+        }catch(\Exception $e){
+            return $this->sendError($e->getMessage());
+        }
+    }
+
     public function store(Request $request, TransaksiService $transaksi_service) : JsonResponse
     {
         try{

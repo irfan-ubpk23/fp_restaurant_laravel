@@ -16,6 +16,10 @@ class OrderService
         return OrderResource::collection(Order::all());
     }
 
+    public function today(){
+        return OrderResource::collection(Order::whereDate('created_at', date('Y-m-d'))->get());
+    }
+
     public function show($id) : Order
     {
         $validator = Validator::make(["id"=>$id], [
@@ -54,7 +58,7 @@ class OrderService
             }
         }
 
-        $last_order = Order::whereDay("created_at", "=", date("d"))
+        $last_order = Order::whereDate("created_at", "=", date("Y-m-d"))
             ->orderBy('nomor_antrian', 'desc')
             ->get();
         if (count($last_order) > 0){
@@ -99,7 +103,7 @@ class OrderService
             
             if ($order->jenis_order != "takeaway"){
                 $meja = Meja::find($order->meja_id);
-                if ($order->status_order == 'sudah'){
+                if ($order->status_order == 'selesai'){
                     $meja->status_meja = 'tersedia';
                 }
                 $meja->save();
