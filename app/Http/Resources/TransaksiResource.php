@@ -18,6 +18,7 @@ class TransaksiResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'user.username' => $this->user->username,
+            'user.role' => $this->user->role,
             'order_id' => $this->order_id,
             'total_harga' => $this->total_harga,
             'kode_transaksi' => $this->kode_transaksi,
