@@ -1,24 +1,18 @@
 @extends('layouts.admin')
 
+@push('css')
+<style>
+    .center-text-force{
+        text-align:center !important;
+        vertical-align: middle !important;
+    }
+    .my-child-0 *{
+        margin: 0px 0px 0px 0px;
+    }
+</style>
+@endpush
+
 @section('content')
-    <div class="row row-cols-2 border" id="menuRow" style="display:none">
-        <img data-field-src="   " alt="" id="gambar_menu" class="col-4 field">
-
-        <div class="col-8 row row-cols-2 my-auto">
-            <label for="nama_menu" class="col field">Menu</label>
-            <p id="nama_menu" class="col field"></p>
-    
-            <label for="jumlah" class="col field">Jumlah</label>
-            <p id="jumlah" class="col field"></p>
-        </div>
-    </div>
-    <x-modal modalId="menuModal" title="Menu Data">
-        <x-slot:body>
-            <div id="menuField" class="container">
-            </div>
-        </x-slot:body>
-    </x-modal>
-
     <x-modal modalId="statusModal" title="Edit Status">
         <x-slot:body>
             Apakah anda yakin?
@@ -42,31 +36,37 @@
                     <h6 class="m-0 font-weight-bold text-primary">Order Table</h6>
                 </div>
                 <div class="card-body">
-                    <x-datatable datatable-id="datatable">
+                    <x-datatable datatable-id="datatable" init-on-ready='false'>
                         <x-slot:head>
                             <tr>
                                 <th>Nomor Antrian</th>
                                 <th>Menu</th>
-                                <th>Status Order</th>
                                 <th>Keterangan</th>
+                                <th>Aksi</th>
                             </tr>
                         </x-slot:head>
                         <x-slot:body>
                             @foreach ($orders as $order)
                                 <tr>
-                                    <td>{{ $order->nomor_antrian }}</td>
-                                    <td>
-                                        <button type="button" id="show-menu-btn" data-datas="{{ $order->toJson() }}" class="btn btn-primary btn-circle">
-                                            <i class="fa-solid fa-eye"></i>
-                                        </button>
+                                    <td class="center-text-force">
+                                        <p>{{ $order->nomor_antrian }}</p>
                                     </td>
                                     <td>
-                                        <select name="" id="status-select" value="{{ $order->status_order }}" data-id="{{ $order->id }}" class="form-select">
-                                            <option value="proses">Proses</option>
-                                            <option value="sudah dibuat">Sudah Dibuat</option>
-                                        </select>
+                                        @if ($order->details)
+                                        @foreach($order->details as $detail)
+                                        <div class="row row-cols-2 my-child-0">
+                                            <p>{{ $detail->menu->nama_menu }}</p>
+                                            <p>x{{ $detail->jumlah }}</p>
+                                        </div>
+                                        @endforeach
+                                        @endif
                                     </td>
                                     <td>{{ $order->keterangan }}</td>
+                                    <td>
+                                        @if ($order->status_order === "proses")
+                                            <button id="ask-update-status-btn" data-id="{{ $order->id }}" class="btn btn-primary">Sudah dibuat</button>
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         </x-slot:body>
@@ -80,62 +80,20 @@
 @push("js")
 <script>
     document.addEventListener("DOMContentLoaded", ()=>{
-        const menuModal = new bootstrap.Modal("#menuModal");
-        const menuRow = document.getElementById("menuRow");
-        const menuField = document.getElementById("menuField");
+        const datatable = new DataTable("#datatable", {
+            order : [[0, 'desc']],
+            scrollX : true,
+            stateSave: true
+        })
         const statusModal = new bootstrap.Modal("#statusModal");
         let current_status_button;
 
         document.getElementById("save-status-btn").addEventListener("click", save_status);
-        document.getElementById("statusModal").addEventListener("hidden.bs.modal", cancel_status);
 
-        document.querySelectorAll("#show-menu-btn").forEach((e) => {
-            e.addEventListener("click", ()=>show_menu(e));
-        });
-
-        document.querySelectorAll("#status-select").forEach((e)=>{
-            e.addEventListener("change", ()=>show_status(e));
+        document.querySelectorAll("#ask-update-status-btn").forEach((e)=>{
+            e.addEventListener("click", ()=>show_status(e));
         })
         
-        function show_menu(button){
-            menuField.innerHTML = "";
-            menuModal.show();
-            
-            const fragment = document.createDocumentFragment();
-            const row_datas = JSON.parse(button.getAttribute("data-datas"))["details"];
-
-            for (let index = 0; index < row_datas.length; index++) {
-                const row_data = row_datas[index];
-
-                const row = menuRow.cloneNode(true);
-                row.style.cssText="";
-                
-                row.querySelectorAll(".field").forEach((child) => {
-                    if (child.tagName == "LABEL"){
-                        child.htmlFor += index;
-                    }else{
-                        switch (child.id) {
-                            case "gambar_menu":
-                                child.src = child.getAttribute("data-field-src") + row_data["menu"]["gambar_menu"];
-                                break;
-                            case "nama_menu":
-                                child.innerText = ":" + row_data["menu"]["nama_menu"];
-                                break;
-                            case "jumlah":
-                                child.innerText = ":" + row_data["jumlah"];
-                                break;
-                            default:
-                                break;
-                        }
-                        child.id += index;
-                    }
-                });
-                
-                fragment.appendChild(row);
-            };
-            menuField.appendChild(fragment);
-        }
-
         function show_status(button){
             statusModal.show();
             current_status_button = button;
@@ -150,22 +108,27 @@
                 },
                 method: "put",
                 credentials:"same-origin",
-                body: JSON.stringify({status_order : current_status_button.value})
+                body: JSON.stringify({status_order : "sudah dibuat"})
             })
             .then((response)=>{
-                
                 return response.json().then((data) => {
+                    // location.reload()
                     show_message(data["message"]);
+                    // document.querySelector("#messageModal .btn-close").bind(document);
+                    document.querySelector("#messageModal .btn-close").addEventListener('click', ()=>{
+                        location.reload();
+                    });
                 })
             })
             
             statusModal.hide();
-            cancel_status();
         }
 
-        function cancel_status(){
-            current_status_button.value = current_status_button.value === "proses" ? "sudah dibuat" : "proses";
-        }
+        setInterval(() => {
+            if (! document.querySelector("body").classList.contains('modal-open')){
+                location.reload();
+            }
+        }, 5000);
     });
 </script>
 @endpush
