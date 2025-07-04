@@ -18,6 +18,11 @@ class MenuService
         return MenuResource::collection(Menu::all());
     }
 
+    public function where_tersedia()
+    {
+        return MenuResource::collection(Menu::where("status_menu", 'ada')->get());
+    }
+
     public function show($id) : Menu
     {
         $validator = Validator::make(["id"=>$id], [

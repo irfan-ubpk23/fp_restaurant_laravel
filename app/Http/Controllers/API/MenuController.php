@@ -13,7 +13,7 @@ class MenuController extends BaseController
     public function index(MenuService $menu_service): JsonResponse
     {
         try{
-            return $this->sendResponse($menu_service->all());
+            return $this->sendResponse($menu_service->where_tersedia());
         }catch(\Exception $e){
             return $this->sendError($e->getMessage());
         }
