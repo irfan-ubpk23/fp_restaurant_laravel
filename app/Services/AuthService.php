@@ -28,6 +28,10 @@ class AuthService
         
         $user = User::where('email', $email)->first();
         
+        if ($user == null){
+            throw new \Exception("Password atau Email Salah!");
+        }
+
         if (sizeof($expect_roles) > 0 && in_array($user->role, $expect_roles) == false){
             throw new \Exception("Role tidak sesuai!");
         }
