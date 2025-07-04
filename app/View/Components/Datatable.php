@@ -13,7 +13,8 @@ class Datatable extends Component
      */
     public function __construct(
         public string $datatableId="datatable",
-        public string $filterRowPlacement="datatable-filter-row"
+        public string $filterRowPlacement="datatable-filter-row",
+        public string $initOnReady="true"
     )
     {
         //

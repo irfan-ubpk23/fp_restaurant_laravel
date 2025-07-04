@@ -32,6 +32,7 @@
 
 @push('js')
 <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+@if ($initOnReady === 'true')
 <script>
     $(document).ready( function() {
         const datatableId = "#{{ $datatableId }}";
@@ -77,4 +78,5 @@
         })
     });
 </script>
+@endif
 @endpush
