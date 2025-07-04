@@ -72,7 +72,7 @@ Route::middleware('auth:sanctum')->group(function(){
     });
 
     Route::controller(TransaksiController::class)->group(function(){
-        Route::get("/transaksis/today/", 'today');
+        Route::get("/transaksis/today/get/", 'today');
         Route::get("/transaksis/overview/{mode}", 'overview');
         
         Route::get("/transaksis/user/{id}", 'where_user_id');
