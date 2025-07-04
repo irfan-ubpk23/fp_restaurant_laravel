@@ -8,6 +8,7 @@ use PDF;
 use App\Models\Transaksi;
 use App\Models\Kategori;
 use App\Models\Menu;
+use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Reservasi;
 
@@ -44,7 +45,10 @@ class HomeController extends Controller
                 "total_annually_transaksis" => $total_annually_transaksis
             ]);
         }else if($role === "dapur"){
-            return view("dapur.index", ["orders"=>$order_service->today()]);
+            $orders = Order::whereDate('created_at', date('Y-m-d'))->where("status_order", 'proses')->get();
+            return view("dapur.index", [
+                "orders"=> $orders
+            ]);
         }else{
             return back();
         }
