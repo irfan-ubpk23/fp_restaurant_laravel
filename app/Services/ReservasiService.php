@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Reservasi;
+use App\Models\Meja;
 
 use Illuminate\Support\Facades\Validator;
 
@@ -72,6 +73,12 @@ class ReservasiService
         }
         if (isset($params["status_reservasi"])){
             $reservasi->status_reservasi = $params['status_reservasi'];
+
+            if ($reservasi->status_reservasi === "tidak_hadir"){
+                $meja = Meja::find($reservasi->transaksi->order->meja->id);
+                $meja->status_meja = "tersedia";
+                $meja->save();
+            }
         }
         $reservasi->save();
 
